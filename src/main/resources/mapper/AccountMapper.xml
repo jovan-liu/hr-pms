@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.AccountDao">
+
+	<select id="findList" resultType="com.lzh.hr.pms.entity.Account">
+		select id as accountId,username
+		from users
+	</select>
+	<select id="findByUsername" resultType="com.lzh.hr.pms.entity.Account">
+		select id as
+		accountId,username
+		from users
+		where username = #{username}
+		limit 1
+	</select>
+
+	<select id="getAccountByUsername" resultType="com.lzh.hr.pms.entity.Account">
+		select *
+		from users
+		where username = #{username}
+		limit 1
+	</select>
+
+	<insert id="insert" parameterType="com.lzh.hr.pms.entity.Account"
+		useGeneratedKeys="true" keyProperty="accountId" keyColumn="id">
+		insert
+		INTO
+		users(username,password,status,createTime)
+		VALUES(#{username},#{password},#{status},#{createTime})
+	</insert>
+	<delete id="deleteById">
+		delete
+		from users
+		where id=#{id}
+	</delete>
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Account">
+		update users
+		set
+		password=#{password}
+		where username=#{username}
+	</update>
+	<select id="findById" resultType="com.lzh.hr.pms.entity.Account">
+		select *
+		from users
+		where
+		id=#{accountId}
+	</select>
+</mapper>

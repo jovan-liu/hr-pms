@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.OperateLogDao">
+   <select id="findAll" resultType="com.lzh.hr.pms.entity.OperateLog">
+       select id,worker,operate_log as operateLog,createtime
+       from operate_log
+       <where>
+           <if test="beginTime != null">
+              <![CDATA[
+                 and createtime >= #{beginTime}
+              ]]>
+
+           </if>
+           <if test="endTime != null">
+               <![CDATA[
+                 and createtime <= #{endTime}
+               ]]>
+           </if>
+       </where>
+   </select>
+    <insert id="insert" parameterType="com.lzh.hr.pms.entity.OperateLog" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        operate_log(worker,operate_log,createtime)
+        values(#{worker},#{operateLog},#{createtime})
+    </insert>
+    
+    <select id="countOperateLog" resultType="Long">
+		SELECT count(id) FROM operate_log 
+		<where>
+			<if test="worker != null"> and worker like concat('%',#{worker},'%')</if>
+			<if test="operateLog != null"> and operate_log like concat('%',#{operateLog},'%')</if>
+			<if test="operateStartTime!=null"> and (createtime between #{operateStartTime} and #{operateEndTime})				
+			</if>
+		</where>
+	</select>
+	
+	<select id="findOperateLog" resultType="com.lzh.hr.pms.entity.OperateLog">
+		SELECT id,worker,operate_log as operateLog,createtime 
+		FROM operate_log 
+		<where>
+			<if test="param.worker != null"> and worker like concat('%',#{param.worker},'%')</if>
+			<if test="param.operateLog != null"> and operate_log like concat('%',#{param.operateLog},'%')</if>
+			<if test="param.operateStartTime!=null"> and (createtime between STR_TO_DATE(#{param.operateStartTime},'%Y-%m-%d %H:%i:%s') and STR_TO_DATE(#{param.operateEndTime},'%Y-%m-%d %H:%i:%s'))				
+			</if>
+		</where>
+		 order by createtime desc
+		<if test="limit != null">
+			<if test="start != null">LIMIT ${start},${limit} </if>
+			<if test="start == null">LIMIT ${limit} </if>
+		</if>
+	</select>
+    
+</mapper>

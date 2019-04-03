@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.RoleDao">
+	<select id="findList" resultType="com.lzh.hr.pms.entity.Role">
+		select *
+		from roles
+	</select>
+	<select id="findListByAccountId" resultType="com.lzh.hr.pms.entity.Role">
+		select roles.*
+		from roles,users,user_roles
+		where roles.id=user_roles.role_id
+		and users.id=user_roles.user_id
+		and users.id= #{accountId}
+	</select>
+	<select id="findListNotAccountId" resultType="com.lzh.hr.pms.entity.Role">
+		select roles.*
+		from roles,users,user_roles
+		where roles.id=user_roles.role_id
+		and users.id=user_roles.user_id
+		and users.id != #{accountId}
+	</select>
+	<delete id="deleteRoleByRoleId">
+		delete
+		from roles
+		where id = #{roleId}
+	</delete>
+	<select id="findByRoleName" resultType="com.lzh.hr.pms.entity.Role">
+		select *
+		from roles
+		where roleName= #{roleName}
+		limit 1
+	</select>
+	<insert id="insert" useGeneratedKeys="true"
+		parameterType="com.lzh.hr.pms.entity.Role" keyProperty="id">
+		insert into
+		roles(roleName,description)
+		values(#{roleName},#{description})
+	</insert>
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Role">
+		update roles
+		set roleName=#{roleName} ,description=#{description}
+		where id=#{id}
+	</update>
+	<select id="findById" resultType="com.lzh.hr.pms.entity.Role">
+		select *
+		from roles
+		where id = #{roleId}
+	</select>
+</mapper>

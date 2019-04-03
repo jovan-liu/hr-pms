@@ -1,0 +1,105 @@
+.form {	
+	width: 95%;
+	padding: 20px;
+	background: #f0f0f0;
+	overflow:auto;				
+	border: 1px solid #cccccc;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;					
+	-moz-box-shadow: 2px 2px 2px #cccccc;
+	-webkit-box-shadow: 2px 2px 2px #cccccc;
+	box-shadow: 2px 2px 2px #cccccc;			
+}		
+.field{margin-bottom:7px;}	
+label {
+	font-family: Arial, Verdana; 
+	text-shadow: 2px 2px 2px #ccc;
+	display: block; 
+	float: left; 
+	font-weight: bold; 
+	margin-right:10px; 
+	text-align: right; 
+	width: 120px; 
+	line-height: 25px; 
+	font-size: 15px; 
+}			
+.input{
+	font-family: Arial, Verdana; 
+	font-size: 15px; 
+	padding: 5px; 
+	border: 1px solid #b9bdc1; 
+	width: 300px; 
+	color: #797979;	
+}			
+.input:focus{
+	background-color:#E7E8E7;	
+}			
+.textarea {
+	height:150px;	
+}		
+.hint{
+	display:none;
+}			
+.field:hover .hint {  
+	position: absolute;
+	display: block;  
+	/* margin: -30px 0 0 455px; */
+	margin: -30px 0 0 500px;
+	color: #FFFFFF;
+	padding: 7px 10px;
+	background: rgba(0, 0, 0, 0.6);
+	
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;	
+}			
+.button{
+	float: right;
+	margin:10px 55px 10px 0;
+	font-weight: bold;
+	line-height: 1;
+	padding: 6px 10px;
+	cursor:pointer;   
+	color: #fff;			
+	text-align: center;
+	text-shadow: 0 -1px 1px #64799e;			
+	background: #a5b8da;
+	background: -moz-linear-gradient(top, #a5b8da 0%, #7089b3 100%);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a5b8da), to(#7089b3));			
+  	border: 1px solid #5c6f91;  
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;	  
+	-moz-box-shadow: inset 0 1px 0 0 #aec3e5;
+	-webkit-box-shadow: inset 0 1px 0 0 #aec3e5;
+	box-shadow: inset 0 1px 0 0 #aec3e5;			
+}			
+.button:hover {
+	background: #848FB2;
+    cursor: pointer;
+}
+.select{
+	width:100px;
+	padding:5px;
+}
+.warn-save{
+	margin-bottom:15px;
+	margin-top:20px;
+	width:350px;
+	margin:0 auto;
+}
+.save{
+	margin-right:80px;
+}
+.block_type{
+	margin-left:70px;
+}
+.operator-wrap {height: 50px;line-height: 50px;text-align: center;float: right;padding-right: 20px;font-size: 10px;}
+.negative_notice {width: 80%;height: 20px;margin: -7px auto 10px;line-height: 2px;border: 1px solid #C00000;border-radius: 0.333em;box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);text-align: center;}
+.positive_notice {width: 80%;height: 20px;margin: -7px auto 10px;line-height: 20px;border: 1px solid #00CC00;border-radius: 0.333em;box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);text-align: center;}
+.progress-outer{border: 1px solid rgb(252, 90, 10); margin: 2px; padding: 3px; height: 15px; border-radius: 13px; position: relative; width: 80%;float:left;}
+.progress-inner{height: 15px; border-radius: 10px; color: red; text-align: center; background-color: rgb(174, 174, 234); width: 0%;}
+.progress-info{position: absolute; left: 50%; top: 15%; color: red; font-weight: bold;}
+.progress-button{margin: 0px 0px 0px 5px; float: none; padding: 4px 8px;}
+.can-button{margin: 0px 0px 0px 5px; float: none; padding: 4px 8px;  background: -moz-linear-gradient(center top , red 0%, red 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);}

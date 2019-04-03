@@ -1,0 +1,8 @@
+/*shop_list*/
+.content-main table.while tbody tr.table-list td{vertical-align:top;}
+.table-list label{margin-left:15px;}
+.table-list .reSend, .table-list .dirConfirm{color:#3399CC;cursor:pointer;}
+.img-wrap{width:100px;height:100px;float:left;overflow:hidden;}
+.item-info{width:200px;float:left;text-align:left;line-height:18px;}
+.item-name{height:65px;overflow:hidden;padding:0 5px;}
+.item-price{height:20px;overflow:hidden;padding:0 5px;}

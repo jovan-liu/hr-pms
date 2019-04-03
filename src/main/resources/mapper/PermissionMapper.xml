@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.PermissionDao">
+	<select id="getListByRoleId" resultType="com.lzh.hr.pms.entity.Permission">
+		select permissions.*
+		from permissions ,roles,roles_permissions
+		where
+		  permissions.id=roles_permissions.permission_id
+		  and roles.id=roles_permissions.role_id
+		  and roles.id= #{roleId}
+	</select>
+    <delete id="deleteById">
+        delete
+        from permissions
+        where id=#{permId}
+    </delete>
+    <select id="getList" resultType="com.lzh.hr.pms.entity.Permission">
+        select *
+        from permissions
+    </select>
+    <select id="findPermByPermission" resultType="com.lzh.hr.pms.entity.Permission">
+        select *
+        from permissions
+        where permission=#{permission}
+        limit 1
+    </select>
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.lzh.hr.pms.entity.Permission" keyProperty="id">
+        insert
+        into permissions(permission,description,createTime,impower,rtxnumber)
+        values(#{permission},#{description},#{createTime},#{impower},#{rtxnumber})
+    </insert>
+    <select id="findById" resultType="com.lzh.hr.pms.entity.Permission">
+        select *
+        from permissions
+        where  id=#{id}
+        limit 1
+    </select>
+    <update id="update" parameterType="com.lzh.hr.pms.entity.Permission">
+        update permissions
+        set  permission=#{permission},description=#{description},impower=#{impower},rtxnumber=#{rtxnumber}
+        where id=#{id}
+    </update>
+</mapper>
