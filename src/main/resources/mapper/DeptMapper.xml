@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.DeptDao">
+
+	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Dept">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="desc" property="desc" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    	id, name, `desc`, status
+    </sql>
+    
+    <select id="findDeptById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM dept
+	</select>
+    
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM dept
+	</select>
+	
+	<insert id="save" parameterType="com.lzh.hr.pms.entity.Dept" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO dept(name, `desc`, status)
+		VALUES(#{name}, #{desc}, #{status})
+	</insert>
+	
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Dept">
+		UPDATE dept
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="desc != null">
+				`desc` = #{desc},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM dept WHERE id = #{id}
+	</delete>
+	
+</mapper>

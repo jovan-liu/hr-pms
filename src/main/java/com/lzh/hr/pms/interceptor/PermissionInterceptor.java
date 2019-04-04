@@ -30,6 +30,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		menuList.put("book-list", 13);
 		menuList.put("post-list", 14);
 		menuList.put("user-list", 15);
+		menuList.put("dept-list", 16);
 
 		menuList.put("operatelog-list", 100);
 

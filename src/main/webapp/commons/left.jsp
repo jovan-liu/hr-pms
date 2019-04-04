@@ -73,6 +73,9 @@
             <shiro:hasPermission name="post-list">         
                 <li><a href="${appName}/user/user-list" <c:if test="${menu==15}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>灌水用户列表</a></li>
             </shiro:hasPermission>
+            <shiro:hasPermission name="dept-list">         
+                <li><a href="${appName}/dept/dept-list" <c:if test="${menu==16}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>部门列表</a></li>
+            </shiro:hasPermission>
           </ul>
         </li> 
         
