@@ -47,7 +47,7 @@
 									<td>${dept.id}</td>
 									<td>${dept.name}</td>
 									<td>${dept.desc}</td>
-									<td>${dept.desc}</td>
+									<td>${dept.status}</td>
 									<td>
 										<div class="btn-group">
 											<button

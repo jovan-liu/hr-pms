@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.EmpNumberDao">
+
+    
+    <select id="findNumber" resultType="java.lang.Integer">
+		SELECT number
+		FROM emp_number
+	</select>
+    
+	<update id="updateNumber" parameterType="java.lang.Integer">
+		UPDATE emp_number
+		SET number = #{number}
+	</update>
+	
+	
+</mapper>

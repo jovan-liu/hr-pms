@@ -64,16 +64,16 @@
               <shiro:hasPermission name="emp-list">
                   <li><a href="${appName}/emp/emp-list" <c:if test="${menu==11}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>员工列表</a></li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="emp-list">
+              <shiro:hasPermission name="emp-attendance-list">
                   <li><a href="${appName}/emp/emp-attendance-list" <c:if test="${menu==12}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>考勤列表</a></li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="emp-list">
+              <shiro:hasPermission name="emp-ot-list">
                   <li><a href="${appName}/emp/emp-ot-list" <c:if test="${menu==13}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>加班列表</a></li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="emp-list">
+              <shiro:hasPermission name="eemp-leave-list">
                   <li><a href="${appName}/emp/emp-leave-list" <c:if test="${menu==14}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>请假列表</a></li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="emp-list">
+              <shiro:hasPermission name="emp-salary-list">
                   <li><a href="${appName}/emp/emp-salary-list" <c:if test="${menu==15}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>薪资列表</a></li>
               </shiro:hasPermission>
           </ul>

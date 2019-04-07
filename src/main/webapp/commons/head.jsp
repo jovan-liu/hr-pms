@@ -18,7 +18,7 @@
 					data-target=".navbar-collapse2">
 				<span class="glyphicon glyphicon-th"></span>
 			</button>
-			<a class="navbar-brand" href="#">禅迹 管理后台 ${titleName} 环境</a>
+			<a class="navbar-brand" href="#">企业 人事管理 ${titleName} 系统</a>
 		</div>
 
 		<div class="navbar-collapse  collapse">

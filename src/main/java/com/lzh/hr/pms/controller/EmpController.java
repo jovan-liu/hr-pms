@@ -15,30 +15,39 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lzh.hr.pms.entity.Dept;
+import com.lzh.hr.pms.dto.EmpDTO;
+import com.lzh.hr.pms.entity.Emp;
 import com.lzh.hr.pms.entity.OperateLog;
+import com.lzh.hr.pms.response.Page;
 import com.lzh.hr.pms.service.DeptService;
+import com.lzh.hr.pms.service.EmpService;
 
 
 @Controller
-@RequestMapping("/dept")
-public class DeptController extends BaseController {
+@RequestMapping("/emp")
+public class EmpController extends BaseController {
 	
+	@Autowired
+	private EmpService empService;
 	@Autowired
 	private DeptService deptService;
 
-	@RequestMapping(value = "/dept-list")
-    public String getDeptList(HttpServletRequest request, Model model) throws JSONException {
-		model.addAttribute("deptList", deptService.findAll());
-		return "forward:/dept/dept-list.jsp";
+	@RequestMapping(value = "/emp-list")
+	public String getEmpList(HttpServletRequest request, Model model, Integer pageNumber, EmpDTO empDto) throws JSONException {
+		//model.addAttribute("empList", empService.findAll());
+		Page<Emp> empList = empService.findByPage(empDto, pageNumber, 20);
+		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("empList", empList);
+		model.addAttribute("empDto", empDto);
+		return "forward:/emp/emp-list.jsp";
     }
 
 	@RequestMapping(value = "/delete", produces = { "application/json;charset=UTF-8" })
     @ResponseBody
-	public Map<String, Object> deleteDept(HttpServletRequest request, Model model, Integer id) throws Exception {
+	public Map<String, Object> deleteEmp(HttpServletRequest request, Model model, Integer id) throws Exception {
 		Map<String, Object> data = new HashMap<String, Object>();
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean flag = deptService.deleteById(id);
+		boolean flag = empService.deleteById(id);
 		if (flag) {
 			OperateLog operateLog = new OperateLog();
 			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
@@ -53,47 +62,46 @@ public class DeptController extends BaseController {
 		return data;
 	}
 
-    @RequestMapping(value = "/dept-add")
-	public String addMod(HttpServletRequest request, @ModelAttribute("dept") Dept dept) throws InterruptedException {
-		boolean flag = deptService.save(dept); 
+    @RequestMapping(value = "/emp-add")
+	public String addMod(HttpServletRequest request, @ModelAttribute("emp") Emp emp) throws InterruptedException {
+		boolean flag = empService.save(emp);
 		if (flag) {
 			OperateLog operateLog = new OperateLog();
 			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
 					: SecurityUtils.getSubject().getPrincipal().toString());
 			operateLog.setCreatetime(new Date());
-			operateLog.setOperateLog("部门保存成功:" + dept.getName());
+			operateLog.setOperateLog("部门保存成功:" + emp.getName());
 			operateLogService.insert(operateLog);
 		}
-		return "redirect:/dept/dept-list";
+		return "redirect:/emp/emp-list";
 	}
 
-	@RequestMapping(value = "/dept-update")
-	public String updateMod(HttpServletRequest request, Dept dept)
+	@RequestMapping(value = "/emp-update")
+	public String updateMod(HttpServletRequest request, Emp emp)
 			throws InterruptedException {
-		boolean flag = deptService.update(dept); 
+		boolean flag = empService.update(emp); 
 		if (flag) {
 			OperateLog operateLog = new OperateLog();
 			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
 					: SecurityUtils.getSubject().getPrincipal().toString());
 			operateLog.setCreatetime(new Date());
-			operateLog.setOperateLog("部门更新:" + dept.getName());
+			operateLog.setOperateLog("部门更新:" + emp.getName());
 			operateLogService.insert(operateLog);
 		}
-		return "redirect:/dept/dept-list";
+		return "redirect:/emp/emp-list";
 	}
 
-    @RequestMapping(value = "/dept-add-show")
+    @RequestMapping(value = "/emp-add-show")
 	public String addModShow(HttpServletRequest request, Model model) {
-		return "forward:/dept/dept-add-show.jsp";
+    	model.addAttribute("deptList", deptService.findAll());
+		return "forward:/emp/emp-add-show.jsp";
 	}
 
-    @RequestMapping(value = "/dept-edit-show")
+    @RequestMapping(value = "/emp-edit-show")
 	public String updateModShow(HttpServletRequest request, Integer id, Model model) {
-		Dept dept = deptService.findDeptById(id);
-		model.addAttribute("id", dept.getId());
-		model.addAttribute("name", dept.getName());
-		model.addAttribute("desc", dept.getDesc());
-		model.addAttribute("status", dept.getStatus());
-		return "forward:/dept/dept-edit-show.jsp";
+		Emp emp = empService.findEmpById(id);
+		model.addAttribute("emp", emp);
+		model.addAttribute("deptList", deptService.findAll());
+		return "forward:/emp/emp-edit-show.jsp";
 	}
 }

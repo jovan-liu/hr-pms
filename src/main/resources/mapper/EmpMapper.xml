@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.EmpDao">
+
+	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Emp">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="dept_id" property="deptId" jdbcType="INTEGER"/>
+        <result column="dept_name" property="deptName" jdbcType="VARCHAR"/>
+        <result column="photo" property="photo" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="ID_card" property="IDCard" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="sex" property="sex" jdbcType="TINYINT"/>
+        <result column="marital_status" property="maritalStatus" jdbcType="TINYINT"/>
+        <result column="place_of_birth" property="placeOfBirth" jdbcType="VARCHAR"/>
+        <result column="current_city" property="currentCity" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="hiredate" property="hiredate" jdbcType="DATE"/>
+        <result column="offdate" property="offdate" jdbcType="DATE"/>
+        <result column="create_user_name" property="createUserName" jdbcType="VARCHAR"/>
+        <result column="created_on" property="createdOn" jdbcType="TIMESTAMP"/>
+        <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR"/>
+        <result column="updated_on" property="updatedOn" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    	id, number, dept_id, dept_name, photo, name, age, ID_card, phone, email, birthday, sex, marital_status, 
+    	place_of_birth, current_city, status, hiredate, offdate, create_user_name, created_on, update_user_name, updated_on
+    </sql>
+    
+    <select id="findEmpById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp
+		WHERE id = #{id}
+	</select>
+    
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp
+	</select>
+	
+	<insert id="save" parameterType="com.lzh.hr.pms.entity.Emp" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO emp(dept_id, dept_name, name, age, ID_card, phone, email, 
+		<if test="birthday != null">
+			birthday,
+		</if>
+		 sex, marital_status, place_of_birth, current_city,
+		<if test="photo != null">
+			photo, 
+		</if>
+		number, hiredate, status, create_user_name, created_on, update_user_name, updated_on)
+		VALUES(#{deptId}, #{deptName}, #{name}, #{age}, #{IDCard}, #{phone}, #{email},
+		<if test="birthday != null">
+			#{birthday},
+		</if>
+		#{sex}, #{maritalStatus}, #{placeOfBirth}, #{currentCity}, 
+		<if test="photo != null">
+			#{photo}, 
+		</if>
+		#{number}, #{hiredate}, #{status}, #{createUserName}, #{createdOn}, #{updateUserName}, #{updatedOn}
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Emp">
+		UPDATE emp
+		<set>
+			<if test="deptId != null">
+				dept_id = #{deptId},
+			</if>
+			<if test="deptName != null">
+				dept_name = #{deptName},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="age != null">
+				age = #{age},
+			</if>
+			<if test="IDCard != null">
+				ID_card = #{IDCard},
+			</if>
+			<if test="phone != null">
+				phone = #{phone},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday},
+			</if>
+			<if test="sex != null">
+				sex = #{sex},
+			</if>
+			<if test="maritalStatus != null">
+				marital_status = #{maritalStatus},
+			</if>
+			<if test="placeOfBirth != null">
+				place_of_birth = #{placeOfBirth},
+			</if>
+			<if test="currentCity != null">
+				current_city = #{currentCity},
+			</if>
+			<if test="photo != null">
+				photo = #{photo},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="updateUserName != null">
+				update_user_name = #{updateUserName},
+			</if>
+			<if test="updatedOn != null">
+				updated_on = #{updatedOn},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM emp WHERE id = #{id}
+	</delete>
+	
+	<select id="countEmp" resultType="Long">
+		SELECT count(id) FROM emp
+		<where>
+			<if test="number != null"> and number = #{number}</if>
+			<if test="name != null"> and name like concat('%',#{name},'%')</if>
+			<if test="deptName != null"> and dept_name like concat('%',#{deptName},'%')</if>
+			<if test="status != null"> and status = #{status}</if>
+		</where>
+	</select>
+	
+	<select id="findEmp" resultType="com.lzh.hr.pms.entity.Emp">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp 
+		<where>
+			<if test="param.number != null"> and number = #{param.number}</if>
+			<if test="param.name != null"> and name like concat('%',#{param.name},'%')</if>
+			<if test="param.deptName != null"> and dept_name like concat('%',#{param.deptName},'%')</if>
+			<if test="param.status != null"> and status = #{param.status}</if>
+		</where>
+		ORDER BY updated_on desc
+		<if test="limit != null">
+			<if test="start != null">LIMIT ${start},${limit} </if>
+			<if test="start == null">LIMIT ${limit} </if>
+		</if>
+	</select>
+	
+</mapper>
