@@ -33,10 +33,8 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">部门状态：</label>
 					<div class="col-sm-9">
-						<input type="radio" class="form-control"
-							   name="status" value="有效" <c:if test="${status}"> checked</c:if> > 有效
-						<input type="radio" class="form-control"
-							   name="status" value="无效" <c:if test="${status}"> checked</c:if> > 无效
+						<label class="btn btn-info"><input id="${id }" name="status" type="radio" value="1" <c:if test="${status}">checked </c:if> >有效</label>
+						<label class="btn btn-info"><input id="${id }" name="status" type="radio" value="0" <c:if test="${!status}">checked </c:if> >无效</label>
 					</div>
 				</div>
 				

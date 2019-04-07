@@ -98,6 +98,7 @@ public class DeptController extends BaseController {
 		model.addAttribute("id", dept.getId());
 		model.addAttribute("name", dept.getName());
 		model.addAttribute("desc", dept.getDesc());
+		model.addAttribute("status", dept.getStatus());
 		return "forward:/dept/dept-edit-show.jsp";
 	}
 }
