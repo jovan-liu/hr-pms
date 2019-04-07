@@ -19,6 +19,7 @@
 		SELECT
 		<include refid="Base_Column_List"></include>
 		FROM dept
+		WHERE id = #{id}
 	</select>
     
 	<select id="findAll" resultMap="BaseResultMap">

@@ -20,7 +20,8 @@
 <div class="col-sm-3 col-md-2 sidebar navbar-collapse2 collapse">
 
      <ul class="nav nav-sidebar" >
-     	
+
+         <shiro:hasPermission name="account">
         <li>
      		<a href="#" class="tree">
               <i class="glyphicon glyphicon-th-large"></i>
@@ -46,40 +47,65 @@
             </shiro:hasPermission>
           </ul>
      	</li>
-     	
+         </shiro:hasPermission>
+
+         <shiro:hasPermission name="hr">
      	<li>
              <a href="#" class="tree">
               <i class="glyphicon glyphicon-th-large"></i>
-              <span>客服使用</span>
-              <i class="glyphicon  <c:if test="${menu==10||menu==11||menu==12||menu==13||menu==14||menu==15||menu==16}">glyphicon-chevron-down</c:if><c:if test="${!(menu==10||menu==11||menu==12||menu==13||menu==14||menu==15||menu==16)}">glyphicon-chevron-left</c:if> myicon"></i>
+              <span>人事使用</span>
+              <i class="glyphicon  <c:if test="${menu==10||menu==11||menu==12||menu==13||menu==14||menu==15}">glyphicon-chevron-down</c:if><c:if test="${!(menu==10||menu==11||menu==12||menu==13||menu==14||menu==15)}">glyphicon-chevron-left</c:if> myicon"></i>
           </a>
-          <ul class="nav nav-self" <c:if test="${menu==10||menu==11||menu==12||menu==13||menu==14||menu==15||menu==16}">style='display:block;'</c:if>>
+          <ul class="nav nav-self" <c:if test="${menu==10||menu==11||menu==12||menu==13||menu==14||menu==15}">style='display:block;'</c:if>>
              <!-- 有present-list权限的才可以使用 -->
-            <shiro:hasPermission name="category-list">         
-            	<li><a href="${appName}/category/category-list" <c:if test="${menu==10}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>分类列表</a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="tag-list">         
-            	<li><a href="${appName}/tag/tag-list" <c:if test="${menu==11}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>标签列表</a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="item-list">         
-            	<li><a href="${appName}/item/item-list" <c:if test="${menu==12}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>商品列表</a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="book-list">         
-                <li><a href="${appName}/book/book-list" <c:if test="${menu==13}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>经书列表</a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="post-list">         
-            	<li><a href="${appName}/post/post-list" <c:if test="${menu==14}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>论坛列表</a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="post-list">         
-                <li><a href="${appName}/user/user-list" <c:if test="${menu==15}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>灌水用户列表</a></li>
-            </shiro:hasPermission>
             <shiro:hasPermission name="dept-list">         
-                <li><a href="${appName}/dept/dept-list" <c:if test="${menu==16}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>部门列表</a></li>
+                <li><a href="${appName}/dept/dept-list" <c:if test="${menu==10}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>部门列表</a></li>
             </shiro:hasPermission>
+              <shiro:hasPermission name="emp-list">
+                  <li><a href="${appName}/emp/emp-list" <c:if test="${menu==11}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>员工列表</a></li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="emp-list">
+                  <li><a href="${appName}/emp/emp-attendance-list" <c:if test="${menu==12}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>考勤列表</a></li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="emp-list">
+                  <li><a href="${appName}/emp/emp-ot-list" <c:if test="${menu==13}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>加班列表</a></li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="emp-list">
+                  <li><a href="${appName}/emp/emp-leave-list" <c:if test="${menu==14}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>请假列表</a></li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="emp-list">
+                  <li><a href="${appName}/emp/emp-salary-list" <c:if test="${menu==15}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>薪资列表</a></li>
+              </shiro:hasPermission>
           </ul>
-        </li> 
-        
-        
+        </li>
+         </shiro:hasPermission>
+
+         <shiro:hasPermission name="emp">
+             <li>
+                 <a href="#" class="tree">
+                     <i class="glyphicon glyphicon-th-large"></i>
+                     <span>员工使用</span>
+                     <i class="glyphicon  <c:if test="${menu==20||menu==21||menu==22||menu==23}">glyphicon-chevron-down</c:if><c:if test="${!(menu==20||menu==21||menu==22||menu==23)}">glyphicon-chevron-left</c:if> myicon"></i>
+                 </a>
+                 <ul class="nav nav-self" <c:if test="${menu==20||menu==21||menu==22||menu==23}">style='display:block;'</c:if>>
+                     <!-- 有present-list权限的才可以使用 -->
+                     <shiro:hasPermission name="attendance-list">
+                         <li><a href="${appName}/attendance/attendance-list" <c:if test="${menu==20}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的考勤</a></li>
+                     </shiro:hasPermission>
+                     <shiro:hasPermission name="ot-list">
+                         <li><a href="${appName}/ot/ot-list" <c:if test="${menu==21}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的加班</a></li>
+                     </shiro:hasPermission>
+                     <shiro:hasPermission name="leave-list">
+                         <li><a href="${appName}/leave/leave-list" <c:if test="${menu==22}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的请假</a></li>
+                     </shiro:hasPermission>
+                     <shiro:hasPermission name="salary-list">
+                         <li><a href="${appName}/salary/salary-list" <c:if test="${menu==23}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的薪资</a></li>
+                     </shiro:hasPermission>
+                 </ul>
+             </li>
+         </shiro:hasPermission>
+
+         <shiro:hasPermission name="log">
         <li>
              <a href="#" class="tree">
               <i class="glyphicon glyphicon-th-large"></i>
@@ -91,7 +117,8 @@
             	<li><a href="${appName}/operatelog/operatelog-list" <c:if test="${menu==100}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>日志记录</a></li>
             </shiro:hasPermission>
           </ul>
-        </li> 
+        </li>
+         </shiro:hasPermission>
         
      </ul>
    </div>

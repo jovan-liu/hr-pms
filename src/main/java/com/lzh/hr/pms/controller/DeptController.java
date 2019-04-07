@@ -11,7 +11,9 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lzh.hr.pms.entity.Dept;
@@ -53,8 +55,11 @@ public class DeptController extends BaseController {
 	}
 
     @RequestMapping(value = "/dept-add")
-	public String addMod(HttpServletRequest request, Dept dept) throws InterruptedException {
-		System.out.println(dept.toString());
+	public String addMod(HttpServletRequest request, @ModelAttribute("dept") Dept dept) throws InterruptedException {
+		System.out.println("Dept: " + dept.toString());
+		System.out.println("HttpServletRequest: " + request.getParameter("desc"));
+		System.out.println();
+		//System.out.println(desc);
 		boolean flag = deptService.save(dept); 
 		if (flag) {
 			OperateLog operateLog = new OperateLog();

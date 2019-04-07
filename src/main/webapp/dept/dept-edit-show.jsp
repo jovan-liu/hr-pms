@@ -34,9 +34,9 @@
 					<label class="col-sm-3 control-label">部门状态：</label>
 					<div class="col-sm-9">
 						<input type="radio" class="form-control"
-							name="status" id="status" value="有效" checked="${status}"> 有效
+							   name="status" value="有效" <c:if test="${status}"> checked</c:if> > 有效
 						<input type="radio" class="form-control"
-							name="status" id="status" value="无效" checked="${status}"> 无效
+							   name="status" value="无效" <c:if test="${status}"> checked</c:if> > 无效
 					</div>
 				</div>
 				
