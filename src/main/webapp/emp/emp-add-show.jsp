@@ -34,6 +34,21 @@
 				</div>
 				
 				<div class="form-group">
+					<label class="col-sm-3 control-label">照片：</label>
+					<div class="col-sm-9 localImag2" id="localImag2">
+						<input id="lefile2" type="file" name="fileName2"
+							style="display: none"> <input type="hidden"
+							id="bg_picture"> <a class="btn btn-warning"
+							onclick="$('input[id=lefile2]').click();">浏览</a>
+						<div class="localImag2" id="localImag2" style="margin-top: 5px">
+							<img
+								src="<%=request.getContextPath()%>/resources/css/background.png"
+								id="preview2" width="200px" height="100px" style="diplay: none" />
+			       		</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
 					<label class="col-sm-3 control-label">年龄：</label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control"
@@ -140,6 +155,50 @@
 		pickerPosition: "bottom-right",
 		endDate:new Date(),
 		initialDate:new Date(),
+	});
+	
+	$('input[id=lefile2]').change(function() {
+		var path = $(this).val();
+		var index = path.lastIndexOf(".");
+		var picture_type = path.substring(index+1,path.length);
+		
+		if(picture_type.toUpperCase()=='JPG' || picture_type.toUpperCase()=='PNG' || picture_type.toUpperCase()=='JPEG' ||picture_type.toUpperCase()=='GIF'){
+			var docObj = document.getElementById("lefile2");
+			var imgObjPreview = document.getElementById("preview2");
+			$("#bg_picture").val(path);
+			
+			if (docObj.files && docObj.files[0]) {
+				//火狐下，直接设img属性
+				imgObjPreview.style.display = 'block';
+				imgObjPreview.style.width = '150px';
+				imgObjPreview.style.height = '150px';
+	
+				//火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式  
+				imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+	
+			} else {
+				//IE下，使用滤镜
+				docObj.select();
+				var imgSrc = document.selection.createRange().text;
+				var localImagId = document.getElementById("localImag2");
+				//必须设置初始大小
+				localImagId.style.width = "150px";
+				localImagId.style.height = "150px";
+				//图片异常的捕捉，防止用户修改后缀来伪造图片
+				try {
+					localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+					localImagId.filters
+							.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+				} catch (e) {
+					alert("您上传的图片格式不正确，请重新选择!");
+					return false;
+				}
+				imgObjPreview.style.display = 'none';
+				document.selection.empty();
+			}
+		}else{
+			alert("您上传的图片格式不正确，请重新选择!");
+		}
 	});
 	
 	

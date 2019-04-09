@@ -70,7 +70,7 @@
               <shiro:hasPermission name="emp-ot-list">
                   <li><a href="${appName}/emp/emp-ot-list" <c:if test="${menu==13}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>加班列表</a></li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="eemp-leave-list">
+              <shiro:hasPermission name="emp-leave-list">
                   <li><a href="${appName}/emp/emp-leave-list" <c:if test="${menu==14}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>请假列表</a></li>
               </shiro:hasPermission>
               <shiro:hasPermission name="emp-salary-list">

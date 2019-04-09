@@ -99,7 +99,9 @@
 								<tr id="dashboard-${emp.id}" class="post">
 									<td>${emp.id}</td>
 									<td>${emp.number}</td>
-									<td>${emp.photo}</td>
+									<td><!-- /upload/xxx.png -->
+										<img src="${emp.photo}" width="100px" height="100px">
+									</td>
 									<td>${emp.deptName}</td>
 									<td>${emp.name}</td>
 									<td>${emp.age}</td>

@@ -11,7 +11,7 @@
 <meta name="author" content="">
 <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-<title>禅迹管理后台</title>
+<title>人事管理系统</title>
 
 <%@ include file="/commons/html-css.jsp"%>
 <%@ include file="/commons/html-compatible.jsp"%>
