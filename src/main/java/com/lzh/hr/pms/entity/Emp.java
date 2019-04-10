@@ -7,6 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
+/**
+ * 员工实体类
+ */
 @Data
 public class Emp implements Serializable {
 

@@ -67,8 +67,8 @@
               <shiro:hasPermission name="emp-attendance-list">
                   <li><a href="${appName}/emp/emp-attendance-list" <c:if test="${menu==12}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>考勤列表</a></li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="emp-ot-list">
-                  <li><a href="${appName}/emp/emp-ot-list" <c:if test="${menu==13}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>加班列表</a></li>
+              <shiro:hasPermission name="emp-overtime-list">
+                  <li><a href="${appName}/emp/emp-overtime-list" <c:if test="${menu==13}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>加班列表</a></li>
               </shiro:hasPermission>
               <shiro:hasPermission name="emp-leave-list">
                   <li><a href="${appName}/emp/emp-leave-list" <c:if test="${menu==14}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>请假列表</a></li>
@@ -92,8 +92,8 @@
                      <shiro:hasPermission name="attendance-list">
                          <li><a href="${appName}/attendance/attendance-list" <c:if test="${menu==20}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的考勤</a></li>
                      </shiro:hasPermission>
-                     <shiro:hasPermission name="ot-list">
-                         <li><a href="${appName}/ot/ot-list" <c:if test="${menu==21}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的加班</a></li>
+                     <shiro:hasPermission name="overtime-list">
+                         <li><a href="${appName}/overtime/overtime-list" <c:if test="${menu==21}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的加班</a></li>
                      </shiro:hasPermission>
                      <shiro:hasPermission name="leave-list">
                          <li><a href="${appName}/leave/leave-list" <c:if test="${menu==22}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的请假</a></li>

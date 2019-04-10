@@ -19,8 +19,8 @@ public interface EmpDao {
 	
 	Boolean deleteById(Integer id);
 	
-	public Long countEmp(EmpDTO param);
+	Long countEmp(EmpDTO param);
 
-	public List<Emp> findEmp(@Param("param") EmpDTO param, @Param("start") Long start, @Param("limit") Integer limit);
+	List<Emp> findEmp(@Param("param") EmpDTO param, @Param("start") Long start, @Param("limit") Integer limit);
 	
 }

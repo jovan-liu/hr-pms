@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.AttendanceDao">
+
+	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Attendance">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="emp_number" property="empNumber" jdbcType="VARCHAR"/>
+        <result column="attendance_date" property="attendanceDate" jdbcType="DATE"/>
+        <result column="sign_in" property="signIn" jdbcType="TIME"/>
+        <result column="sign_out" property="signOut" jdbcType="TIME"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="late" property="late" jdbcType="TINYINT"/>
+        <result column="left" property="left" jdbcType="TINYINT"/>
+        <result column="work_time" property="workTime" jdbcType="FLOAT"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    	id, emp_number, attendance_date, sign_in, sign_out, count, late, `left`, work_time, status
+    </sql>
+    
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_attendance
+		WHERE id = #{id}
+	</select>
+	
+    <select id="countAllAttendance" resultMap="BaseResultMap">
+		SELECT count(id)
+		<include refid="Base_Column_List"></include>
+		FROM emp_attendance
+	</select>
+    
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_attendance
+	</select>
+	
+	<insert id="save" parameterType="com.lzh.hr.pms.entity.Attendance" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO emp_attendance(emp_number, attendance_date, sign_in, count, late)
+		VALUES(#{empNumber}, #{attendanceDate}, #{signIn}, #{count}, #{late})
+	</insert>
+	
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Attendance">
+		UPDATE emp_attendance
+		<set>
+			<if test="signOut != null">
+				sign_out = #{signOut},
+			</if>
+			<if test="count != null">
+				count = #{count},
+			</if>
+			<if test="left != null">
+				`left` = #{left},
+			</if>
+			<if test="workTime != null">
+				work_time = #{workTime},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+		</set>
+		WHERE emp_number = #{empNumber}
+		AND attendance_date = #{attendanceDate}
+	</update>
+	
+	<select id="countAttendance" resultType="Long">
+		SELECT count(id) FROM emp_attendance
+		<where>
+			<if test="empNumber != null"> and emp_number = #{empNumber}</if>
+			<!-- <if test="attendanceDate != null"> and attendance_date &lt; current_date()</if> -->
+			<if test="beginDate != null">
+              <![CDATA[
+                 and attendance_date >= #{beginDate}
+              ]]>
+
+           </if>
+           <if test="endDate != null">
+               <![CDATA[
+                 and attendance_date <= #{endDate}
+               ]]>
+           </if>
+		</where>
+	</select>
+	
+	<select id="findByPage" resultType="com.lzh.hr.pms.entity.Attendance">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_attendance 
+		<where>
+			<if test="param.empNumber != null"> and emp_number = #{param.empNumber}</if>
+			<!-- <if test="param.attendanceDate != null"> and attendance_date &lt; current_date()</if> -->
+			<if test="param.beginDate != null">
+              <![CDATA[
+                 and attendance_date >= #{param.beginDate}
+              ]]>
+
+           </if>
+           <if test="param.endDate != null">
+               <![CDATA[
+                 and attendance_date <= #{param.endDate}
+               ]]>
+           </if>
+		</where>
+		<if test="limit != null">
+			<if test="start != null">LIMIT ${start},${limit} </if>
+			<if test="start == null">LIMIT ${limit} </if>
+		</if>
+	</select>
+	
+	<select id="findTodayAttendance" resultType="com.lzh.hr.pms.entity.Attendance" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_attendance 
+		WHERE emp_number = #{empNumber}
+		AND attendance_date = current_date()
+	</select>
+	
+</mapper>

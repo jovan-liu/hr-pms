@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.OvertimeDao">
+
+	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Overtime">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="emp_number" property="empNumber" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP"/>
+        <result column="reply_time" property="replyTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="create_user_name" property="createUserName" jdbcType="VARCHAR"/>
+        <result column="created_on" property="createdOn" jdbcType="TIMESTAMP"/>
+        <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR"/>
+        <result column="updated_on" property="updatedOn" jdbcType="TIMESTAMP"/>
+        
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    	id, emp_number, start_time, end_time, reason, apply_time, reply_time, status, create_user_name, created_on, update_user_name, updated_on
+    </sql>
+    
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_overtime
+		WHERE id = #{id}
+	</select>
+	
+    <select id="countAllOvertime" resultMap="BaseResultMap">
+		SELECT count(id)
+		<include refid="Base_Column_List"></include>
+		FROM emp_overtime
+	</select>
+    
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_overtime
+	</select>
+	
+	<insert id="save" parameterType="com.lzh.hr.pms.entity.Overtime" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO emp_overtime(emp_number, start_time, end_time, reason, apply_time, status, create_user_name, created_on)
+		VALUES(#{empNumber}, #{startTime}, #{endTime}, #{reason}, #{applyTime}, #{status}, #{createUserName}, #{createdOn})
+	</insert>
+	
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Overtime">
+		UPDATE emp_overtime
+		<set>
+			<if test="replyTime != null">
+				reply_time = #{replyTime},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="updateUserName != null">
+				update_user_name = #{updateUserName},
+			</if>
+			<if test="updatedOn != null">
+				updated_on = #{updatedOn},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="countOvertime" resultType="Long">
+		SELECT count(id) FROM emp_overtime
+		<where>
+			<if test="empNumber != null"> and emp_number = #{empNumber}</if>
+			<if test="beginDate != null">
+              <![CDATA[
+                 and apply_time >= #{beginDate}
+              ]]>
+
+           </if>
+           <if test="endDate != null">
+               <![CDATA[
+                 and apply_time <= #{endDate}
+               ]]>
+           </if>
+		</where>
+	</select>
+	
+	<select id="findByPage" resultType="com.lzh.hr.pms.entity.Overtime">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_overtime 
+		<where>
+			<if test="param.empNumber != null"> and emp_number = #{param.empNumber}</if>
+			<if test="param.beginDate != null">
+              <![CDATA[
+                 and apply_time >= #{param.beginDate}
+              ]]>
+
+           </if>
+           <if test="param.endDate != null">
+               <![CDATA[
+                 and apply_time <= #{param.endDate}
+               ]]>
+           </if>
+		</where>
+		<if test="limit != null">
+			<if test="start != null">LIMIT ${start},${limit} </if>
+			<if test="start == null">LIMIT ${limit} </if>
+		</if>
+	</select>
+	
+</mapper>
