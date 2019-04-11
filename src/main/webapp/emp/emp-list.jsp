@@ -37,7 +37,8 @@
 					value="${empList.pageNumber}" />
 				<div class="form-group">
 					<label for="number"> 员工编码 </label> <input id="number"
-						name="number" class="form-control" value="${empDto.number}">
+						name="number" class="form-control" 
+						placeholder="可模糊查询" value="${empDto.number}">
 				</div>
 				<div class="form-group">
 					<label for="name"> 员工姓名</label> <input

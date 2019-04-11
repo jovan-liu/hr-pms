@@ -56,7 +56,7 @@ public class AttendanceController extends BaseController {
     
 
 	@RequestMapping(value = "/attendance-update")
-	public String updateMod(HttpServletRequest request, Attendance attendance, String del2)
+	public String updateMod(HttpServletRequest request, Attendance attendance)
 			throws InterruptedException {
 		boolean flag = attendanceService.update(attendance); 
 		if (flag) {

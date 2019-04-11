@@ -2,11 +2,12 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lzh.hr.pms.dao.OvertimeDao">
+<mapper namespace="com.lzh.hr.pms.dao.LeaveDao">
 
-	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Overtime">
+	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Leave">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="emp_number" property="empNumber" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
         <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
         <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
         <result column="reason" property="reason" jdbcType="VARCHAR"/>
@@ -21,35 +22,35 @@
     </resultMap>
     
     <sql id="Base_Column_List">
-    	id, emp_number, start_time, end_time, reason, apply_time, reply_time, status, create_user_name, created_on, update_user_name, updated_on
+    	id, emp_number, type, start_time, end_time, reason, apply_time, reply_time, status, create_user_name, created_on, update_user_name, updated_on
     </sql>
     
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		SELECT
 		<include refid="Base_Column_List"></include>
-		FROM emp_overtime
+		FROM emp_leave
 		WHERE id = #{id}
 	</select>
 	
-    <select id="countAllOvertime" resultMap="BaseResultMap">
+    <select id="countAllLeave" resultMap="BaseResultMap">
 		SELECT count(id)
 		<include refid="Base_Column_List"></include>
-		FROM emp_overtime
+		FROM emp_leave
 	</select>
     
 	<select id="findAll" resultMap="BaseResultMap">
 		SELECT
 		<include refid="Base_Column_List"></include>
-		FROM emp_overtime
+		FROM emp_leave
 	</select>
 	
-	<insert id="save" parameterType="com.lzh.hr.pms.entity.Overtime" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO emp_overtime(emp_number, start_time, end_time, reason, apply_time, status, create_user_name, created_on)
-		VALUES(#{empNumber}, #{startTime}, #{endTime}, #{reason}, #{applyTime}, #{status}, #{createUserName}, #{createdOn})
+	<insert id="save" parameterType="com.lzh.hr.pms.entity.Leave" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO emp_leave(emp_number, type, start_time, end_time, reason, apply_time, status, create_user_name, created_on)
+		VALUES(#{empNumber}, #{type}, #{startTime}, #{endTime}, #{reason}, #{applyTime}, #{status}, #{createUserName}, #{createdOn})
 	</insert>
 	
-	<update id="update" parameterType="com.lzh.hr.pms.entity.Overtime">
-		UPDATE emp_overtime
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Leave">
+		UPDATE emp_leave
 		<set>
 			<if test="replyTime != null">
 				reply_time = #{replyTime},
@@ -67,8 +68,8 @@
 		WHERE id = #{id}
 	</update>
 	
-	<select id="countOvertime" resultType="Long">
-		SELECT count(id) FROM emp_overtime
+	<select id="countLeave" resultType="Long">
+		SELECT count(id) FROM emp_leave
 		<where>
 			<if test="empNumber != null"> and emp_number LIKE CONCAT('%', #{empNumber}, '%')</if>
 			<if test="beginDate != null">
@@ -85,10 +86,10 @@
 		</where>
 	</select>
 	
-	<select id="findByPage" resultType="com.lzh.hr.pms.entity.Overtime">
+	<select id="findByPage" resultType="com.lzh.hr.pms.entity.Leave">
 		SELECT
 		<include refid="Base_Column_List"></include>
-		FROM emp_overtime 
+		FROM emp_leave 
 		<where>
 			<if test="param.empNumber != null"> and emp_number LIKE CONCAT('%', #{param.empNumber}, '%')</if>
 			<if test="param.beginDate != null">

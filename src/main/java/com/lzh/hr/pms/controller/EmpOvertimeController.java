@@ -1,6 +1,8 @@
 package com.lzh.hr.pms.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,8 +11,8 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lzh.hr.pms.entity.Overtime;
 import com.lzh.hr.pms.entity.OperateLog;
@@ -20,41 +22,44 @@ import com.lzh.hr.pms.service.OvertimeService;
 
 
 @Controller
-@RequestMapping("/overtime")
-public class OvertimeController extends BaseController {
+@RequestMapping("/emp-overtime")
+public class EmpOvertimeController extends BaseController {
 	
 	@Autowired
 	private OvertimeService overtimeService;
 
-	@RequestMapping(value = "/overtime-list")
+	@RequestMapping(value = "/emp-overtime-list")
 	public String getOvertimeList(HttpServletRequest request, Model model, Integer pageNumber, OvertimeRequest overtimeReq) throws JSONException {
-		String worker = SecurityUtils.getSubject().getPrincipal() == null ? ""
-				: SecurityUtils.getSubject().getPrincipal().toString();
-		overtimeReq.setEmpNumber(worker);
 		Page<Overtime> overtimeList = overtimeService.findByPage(overtimeReq, pageNumber, 20);
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("overtimeList", overtimeList);
 		model.addAttribute("overtimeRequest", overtimeReq);
-		return "forward:/overtime/overtime-list.jsp";
+		return "forward:/emp-overtime/emp-overtime-list.jsp";
     }
 
-    @RequestMapping(value = "/overtime-add")
-	public String addMod(HttpServletRequest request, @ModelAttribute("overtime") Overtime overtime) throws InterruptedException {
-    	boolean flag = overtimeService.save(overtime);
+	@RequestMapping(value = "/emp-overtime-update")
+	@ResponseBody
+	public Map<String, Object> updateMod(HttpServletRequest request, Overtime overtime)
+			throws InterruptedException {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean flag = overtimeService.update(overtime); 
 		if (flag) {
 			OperateLog operateLog = new OperateLog();
 			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
 					: SecurityUtils.getSubject().getPrincipal().toString());
 			operateLog.setCreatetime(new Date());
-			operateLog.setOperateLog("加班保存成功:" + overtime.getEmpNumber());
+			operateLog.setOperateLog("加班更新:" + overtime.getEmpNumber());
 			operateLogService.insert(operateLog);
 		}
-		return "redirect:/overtime/overtime-list";
+		map.put("result", flag);
+		data.put("data", map);
+		data.put("status", "success");
+		return data;
 	}
-    
 
-	@RequestMapping(value = "/overtime-update")
-	public String updateMod(HttpServletRequest request, Overtime overtime)
+	@RequestMapping(value = "/emp-overtime-batch-update")
+	public String batchUpdateMod(HttpServletRequest request, Overtime overtime)
 			throws InterruptedException {
 		boolean flag = overtimeService.update(overtime); 
 		if (flag) {
@@ -65,19 +70,7 @@ public class OvertimeController extends BaseController {
 			operateLog.setOperateLog("加班更新:" + overtime.getEmpNumber());
 			operateLogService.insert(operateLog);
 		}
-		return "redirect:/overtime/overtime-list";
-	}
-	
-	@RequestMapping(value = "/overtime-add-show")
-	public String addModShow(HttpServletRequest request, Model model) {
-		return "forward:/overtime/overtime-add-show.jsp";
-	}
-
-    @RequestMapping(value = "/overtime-edit-show")
-	public String updateModShow(HttpServletRequest request, Integer id, Model model) {
-		Overtime overtime = overtimeService.findById(id);
-		model.addAttribute("overtime", overtime);
-		return "forward:/overtime/overtime-edit-show.jsp";
+		return "redirect:/emp-overtime/emp-overtime-list";
 	}
 
 }
