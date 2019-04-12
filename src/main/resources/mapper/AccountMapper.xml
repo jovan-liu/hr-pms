@@ -7,6 +7,7 @@
 	<select id="findList" resultType="com.lzh.hr.pms.entity.Account">
 		select id as accountId,username
 		from users
+		where username not like 'SKY%';
 	</select>
 	<select id="findByUsername" resultType="com.lzh.hr.pms.entity.Account">
 		select id as
@@ -39,6 +40,12 @@
 		update users
 		set
 		password=#{password}
+		where username=#{username}
+	</update>
+	<update id="updateStatus" parameterType="com.lzh.hr.pms.entity.Account">
+		update users
+		set
+		status=#{status}
 		where username=#{username}
 	</update>
 	<select id="findById" resultType="com.lzh.hr.pms.entity.Account">

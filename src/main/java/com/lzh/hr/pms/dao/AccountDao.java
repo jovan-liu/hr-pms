@@ -44,6 +44,8 @@ public interface AccountDao {
 	 * @return
 	 */
 	public Boolean update(Account account);
+	
+	public Boolean updateStatus(Account account);
 
 	/**
 	 *

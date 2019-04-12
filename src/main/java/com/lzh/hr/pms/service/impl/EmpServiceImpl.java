@@ -131,6 +131,11 @@ public class EmpServiceImpl implements EmpService {
 	}
 
 	public Boolean leaveById(Integer id) {
+		Emp emp = empDao.findEmpById(id);
+		Account account = new Account();
+		account.setUsername(emp.getNumber());
+		account.setStatus(0);
+		accountDao.updateStatus(account);
 		return empDao.leaveById(id);
 	}
 
