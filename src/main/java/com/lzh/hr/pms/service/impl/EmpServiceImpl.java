@@ -130,4 +130,8 @@ public class EmpServiceImpl implements EmpService {
 		return empDao.deleteById(id);
 	}
 
+	public Boolean leaveById(Integer id) {
+		return empDao.leaveById(id);
+	}
+
 }

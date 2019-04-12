@@ -1,6 +1,9 @@
 package com.lzh.hr.pms.mapper.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateTest {
 
@@ -10,10 +13,24 @@ public class DateTest {
 //		cale = Calendar.getInstance();
 //		cale.add(Calendar.MONTH, 0);
 //		cale.set(Calendar.DAY_OF_MONTH, 1);
-		cale = Calendar.getInstance();
-		cale.add(Calendar.MONTH, 1);
-		cale.set(Calendar.DAY_OF_MONTH, 0);
 		
-		System.out.println(cale.getTime());
+		
+//		cale = Calendar.getInstance();
+//		cale.add(Calendar.MONTH, 1);
+//		cale.set(Calendar.DAY_OF_MONTH, 0);
+//		
+//		System.out.println(cale.getTime());
+		
+		Date now = new Date();
+		int hours = now.getHours();
+		int minutes = now.getMinutes();
+		System.out.println(hours + " " + minutes);
+		if (hours > 9 && minutes >= 10) {
+			System.out.println("迟到");
+		}
+		
+		if (hours < 18) {
+			System.out.println("早退");
+		}
 	}
 }

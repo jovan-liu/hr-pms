@@ -33,11 +33,21 @@ public class AttendanceServiceImpl implements AttendanceService {
 				: SecurityUtils.getSubject().getPrincipal().toString();
 		Date date = new Date();
 		
+		int hours = date.getHours();
+		int minutes = date.getMinutes();
+		if (hours > 9 && minutes >= 10) {
+			attendance.setLate(true);
+			attendance.setCountLate(1);
+		} else {
+			attendance.setLate(false);
+			attendance.setCountLate(0);
+		}
+		
 		attendance.setEmpNumber(empNumber);
 		attendance.setAttendanceDate(date);
 		attendance.setSignIn(date);
 		attendance.setCount(1);
-		attendance.setLate(false);
+		
 		
 		return attendanceDao.save(attendance);
 	}
@@ -46,11 +56,38 @@ public class AttendanceServiceImpl implements AttendanceService {
 		String empNumber = SecurityUtils.getSubject().getPrincipal() == null ? ""
 				: SecurityUtils.getSubject().getPrincipal().toString();
 		Attendance curAtten = attendanceDao.findTodayAttendance(empNumber);
+		Date signIn = curAtten.getSignIn();
+		int signInHour = signIn.getHours();
+		int signInMinute = signIn.getMinutes();
+		Date date = new Date();
+		
+		int hours = date.getHours();
+		int minutes = date.getMinutes();
+		if (hours < 18) {
+			attendance.setLeft(true);
+			attendance.setCountLate(curAtten.getCountLate() + 1);
+		} else {
+			attendance.setLeft(false);
+		}
+		
+		Float workTime = null;
+		int workHour = hours - signInHour;
+		int workMinute = minutes - signInMinute;
+		if (workMinute > 30) {
+			workTime = new Float(workHour + 0.5);
+		} else {
+			workTime = new Float(workHour);
+		}
+		if (workTime > 8) {
+			attendance.setStatus(1);
+		} else {
+			attendance.setStatus(0);
+		}
 		
 		attendance.setEmpNumber(empNumber);
 		attendance.setAttendanceDate(curAtten.getAttendanceDate());
-		attendance.setSignOut(new Date());
-		attendance.setLeft(false);
+		attendance.setSignOut(date);
+		
 		attendance.setCount(curAtten.getCount() + 1);
 		
 		return attendanceDao.update(attendance);

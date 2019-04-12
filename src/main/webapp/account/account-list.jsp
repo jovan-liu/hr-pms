@@ -53,7 +53,7 @@
 											<button onclick="password('${account.accountId}')" style="margin-right: 10px;"
 												type="button" class="btn btn-info" data-toggle="dropdown">
 												修改密码</button>
-											<button onclick="toDeleteUser()" type="button" class="btn btn-danger">删除</button>
+											<!-- <button onclick="toDeleteUser()" type="button" class="btn btn-danger">删除</button> -->
 										</div>
 									</td>
 

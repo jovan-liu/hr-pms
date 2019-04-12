@@ -24,6 +24,7 @@ public class Attendance implements Serializable {
 	private Integer count; // 打卡次数
 	private Boolean late = false; // 迟到
 	private Boolean left = false; // 早退
+	private Integer countLate; // 当日迟到早退的次数
 	private Float workTime; // 工作时间 = 签退- 签到
 	/*
 	 * 考勤状态 1正常 0异常

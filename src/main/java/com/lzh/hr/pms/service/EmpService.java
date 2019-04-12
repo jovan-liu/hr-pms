@@ -19,4 +19,6 @@ public interface EmpService {
 	Boolean update(Emp emp);
 	
 	Boolean deleteById(Integer id);
+	
+	Boolean leaveById(Integer id);
 }

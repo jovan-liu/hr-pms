@@ -34,6 +34,14 @@
 				</div>
 				
 				<div class="form-group">
+					<label class="col-sm-3 control-label">员工薪资：</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control"
+							name="salary" id="salary">
+					</div>
+				</div>
+				
+				<div class="form-group">
 					<label class="col-sm-3 control-label">照片：</label>
 					<div class="col-sm-9 localImag2" id="localImag2">
 						<input id="lefile2" type="file" name="fileName2"

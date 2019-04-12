@@ -76,6 +76,7 @@
 								<th>员工照片</th>
 								<th>所属部门</th>
 								<th>员工姓名</th>
+								<th>员工薪资</th>
 								<th>年龄</th>
 								<th>身份证号</th>
 								<th>手机号</th>
@@ -86,7 +87,7 @@
 								<th>出生地</th>
 								<th>目前所在地</th>
 								<th>状态</th>
-								<th>入职日期</th>
+								<th>状态</th>
 								<th>离职日期</th>
 								<th>创建人</th>
 								<th>创建时间</th>
@@ -105,6 +106,7 @@
 									</td>
 									<td>${emp.deptName}</td>
 									<td>${emp.name}</td>
+									<td>${emp.salary}</td>
 									<td>${emp.age}</td>
 									<td>${emp.IDCard}</td>
 									<td>${emp.phone}</td>
@@ -150,9 +152,9 @@
 												type="button" class="btn btn-info" data-toggle="dropdown"
 												style="margin-right: 10px;">编辑</button>
 											<button
-												onclick="delete2('${emp.id}')"
+												onclick="leave('${emp.id}')"
 												type="button" class="btn btn-danger" data-toggle="dropdown"
-												style="margin-right: 10px;">删除</button>	
+												style="margin-right: 10px;">解雇</button>	
 											
 										</div>
 									</td>
@@ -227,14 +229,14 @@
 					});
 		}
 		
-		function delete2(id){
-			if(confirm("^_^确定要用删除吗^_^")) {
-			$.post("${appName}/emp/delete",{"id":id},
+		function leave(id){
+			if(confirm("^_^确定要用解雇吗^_^")) {
+			$.post("${appName}/emp/leave",{"id":id},
 			function(data){
 				if(data.data.result == false) {
 					alert("网络异常或服务器内部错误");
 				} else {
-					$("#dashboard-"+id).remove();
+					window.location.reload();
 				}
 			}, "json");
 			}

@@ -88,6 +88,7 @@
                      <i class="glyphicon  <c:if test="${menu==20||menu==21||menu==22||menu==23}">glyphicon-chevron-down</c:if><c:if test="${!(menu==20||menu==21||menu==22||menu==23)}">glyphicon-chevron-left</c:if> myicon"></i>
                  </a>
                  <ul class="nav nav-self" <c:if test="${menu==20||menu==21||menu==22||menu==23}">style='display:block;'</c:if>>
+                     <%-- <li><a href="${appName}/information/information-list" <c:if test="${menu==24}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>个人信息</a></li> --%>
                      <!-- 有present-list权限的才可以使用 -->
                      <shiro:hasPermission name="attendance-list">
                          <li><a href="${appName}/attendance/attendance-list" <c:if test="${menu==20}">style='color:white;background-color:#428bca'</c:if>><i class="glyphicon glyphicon-indent-left"></i>我的考勤</a></li>

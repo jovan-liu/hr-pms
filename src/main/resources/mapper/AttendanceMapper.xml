@@ -13,13 +13,14 @@
         <result column="count" property="count" jdbcType="INTEGER"/>
         <result column="late" property="late" jdbcType="TINYINT"/>
         <result column="left" property="left" jdbcType="TINYINT"/>
+        <result column="count_late" property="countLate" jdbcType="INTEGER"/>
         <result column="work_time" property="workTime" jdbcType="FLOAT"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
         
     </resultMap>
     
     <sql id="Base_Column_List">
-    	id, emp_number, attendance_date, sign_in, sign_out, count, late, `left`, work_time, status
+    	id, emp_number, attendance_date, sign_in, sign_out, count, late, `left`, count_late, work_time, status
     </sql>
     
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -42,8 +43,8 @@
 	</select>
 	
 	<insert id="save" parameterType="com.lzh.hr.pms.entity.Attendance" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO emp_attendance(emp_number, attendance_date, sign_in, count, late)
-		VALUES(#{empNumber}, #{attendanceDate}, #{signIn}, #{count}, #{late})
+		INSERT INTO emp_attendance(emp_number, attendance_date, sign_in, count, late, count_late)
+		VALUES(#{empNumber}, #{attendanceDate}, #{signIn}, #{count}, #{late}, #{countLate})
 	</insert>
 	
 	<update id="update" parameterType="com.lzh.hr.pms.entity.Attendance">
@@ -57,6 +58,9 @@
 			</if>
 			<if test="left != null">
 				`left` = #{left},
+			</if>
+			<if test="countLate != null">
+				count_late = #{countLate},
 			</if>
 			<if test="workTime != null">
 				work_time = #{workTime},

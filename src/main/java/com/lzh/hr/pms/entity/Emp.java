@@ -1,6 +1,7 @@
 package com.lzh.hr.pms.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +31,7 @@ public class Emp implements Serializable {
 	private String photo;
 	private String number;
 	//private String password;
+	private BigDecimal salary;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date hiredate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

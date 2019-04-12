@@ -49,6 +49,26 @@ public class EmpController extends BaseController {
 		model.addAttribute("empDto", empDto);
 		return "forward:/emp/emp-list.jsp";
     }
+	
+	@RequestMapping(value = "/leave", produces = { "application/json;charset=UTF-8" })
+    @ResponseBody
+	public Map<String, Object> leaveEmp(HttpServletRequest request, Model model, Integer id) throws Exception {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean flag = empService.leaveById(id);
+		if (flag) {
+			OperateLog operateLog = new OperateLog();
+			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
+					: SecurityUtils.getSubject().getPrincipal().toString());
+			operateLog.setCreatetime(new Date());
+			operateLog.setOperateLog("员工解雇，序号:" + id);
+			operateLogService.insert(operateLog);
+		}
+		map.put("result", flag);
+		data.put("data", map);
+		data.put("status", "success");
+		return data;
+	}
 
 	@RequestMapping(value = "/delete", produces = { "application/json;charset=UTF-8" })
     @ResponseBody
@@ -61,7 +81,7 @@ public class EmpController extends BaseController {
 			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
 					: SecurityUtils.getSubject().getPrincipal().toString());
 			operateLog.setCreatetime(new Date());
-			operateLog.setOperateLog("删除部门序号:" + id);
+			operateLog.setOperateLog("删除员工序号:" + id);
 			operateLogService.insert(operateLog);
 		}
 		map.put("result", flag);
@@ -85,7 +105,7 @@ public class EmpController extends BaseController {
 			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
 					: SecurityUtils.getSubject().getPrincipal().toString());
 			operateLog.setCreatetime(new Date());
-			operateLog.setOperateLog("部门保存成功:" + emp.getName());
+			operateLog.setOperateLog("员工保存成功:" + emp.getName());
 			operateLogService.insert(operateLog);
 		}
 		return "redirect:/emp/emp-list";
@@ -115,7 +135,7 @@ public class EmpController extends BaseController {
 						// 读取到的数据长度
 						int len;
 						// 输出的文件流保存图片至本地
-						String filePath = "d:\\upload\\" + name;
+						String filePath = "/upload/" + name;
 						OutputStream os = new FileOutputStream(filePath);
 						while ((len = inputStream.read(bs)) != -1) {
 							os.write(bs, 0, len);
@@ -150,7 +170,7 @@ public class EmpController extends BaseController {
 			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
 					: SecurityUtils.getSubject().getPrincipal().toString());
 			operateLog.setCreatetime(new Date());
-			operateLog.setOperateLog("部门更新:" + emp.getName());
+			operateLog.setOperateLog("员工更新:" + emp.getName());
 			operateLogService.insert(operateLog);
 		}
 		return "redirect:/emp/emp-list";

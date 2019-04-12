@@ -21,6 +21,7 @@
         <result column="place_of_birth" property="placeOfBirth" jdbcType="VARCHAR"/>
         <result column="current_city" property="currentCity" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="salary" property="salary" jdbcType="DECIMAL"/>
         <result column="hiredate" property="hiredate" jdbcType="DATE"/>
         <result column="offdate" property="offdate" jdbcType="DATE"/>
         <result column="create_user_name" property="createUserName" jdbcType="VARCHAR"/>
@@ -31,7 +32,7 @@
     
     <sql id="Base_Column_List">
     	id, number, dept_id, dept_name, photo, name, age, ID_card, phone, email, birthday, sex, marital_status, 
-    	place_of_birth, current_city, status, hiredate, offdate, create_user_name, created_on, update_user_name, updated_on
+    	place_of_birth, current_city, status, salary, hiredate, offdate, create_user_name, created_on, update_user_name, updated_on
     </sql>
     
     <select id="findEmpById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -56,7 +57,7 @@
 		<if test="photo != null">
 			photo, 
 		</if>
-		number, hiredate, status, create_user_name, created_on, update_user_name, updated_on)
+		number, hiredate, status, salary, create_user_name, created_on, update_user_name, updated_on)
 		VALUES(#{deptId}, #{deptName}, #{name}, #{age}, #{IDCard}, #{phone}, #{email},
 		<if test="birthday != null">
 			#{birthday},
@@ -65,7 +66,7 @@
 		<if test="photo != null">
 			#{photo}, 
 		</if>
-		#{number}, #{hiredate}, #{status}, #{createUserName}, #{createdOn}, #{updateUserName}, #{updatedOn}
+		#{number}, #{hiredate}, #{status}, #{salary}, #{createUserName}, #{createdOn}, #{updateUserName}, #{updatedOn}
 		)
 	</insert>
 	
@@ -114,6 +115,9 @@
 			<if test="status != null">
 				status = #{status},
 			</if>
+			<if test="salary != null">
+				salary = #{salary},
+			</if>
 			<if test="updateUserName != null">
 				update_user_name = #{updateUserName},
 			</if>
@@ -122,6 +126,10 @@
 			</if>
 		</set>
 		WHERE id = #{id}
+	</update>
+	
+	<update id="leaveById" parameterType="java.lang.Integer">
+		UPDATE emp SET status = 0 WHERE id = #{id}
 	</update>
 	
 	<delete id="deleteById" parameterType="java.lang.Integer">
