@@ -1,6 +1,8 @@
 package com.lzh.hr.pms.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lzh.hr.pms.entity.Attendance;
 import com.lzh.hr.pms.entity.OperateLog;
@@ -48,6 +51,27 @@ public class EmpAttendanceController extends BaseController {
 			operateLogService.insert(operateLog);
 		}
 		return "redirect:/emp-attendance/emp-attendance-list";
+	}
+	
+	@RequestMapping(value = "/emp-attendance-refresh")
+	@ResponseBody
+	public Map<String, Object> refreshMod(HttpServletRequest request, Integer id)
+			throws InterruptedException {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean flag = attendanceService.refresh(id); 
+		if (flag) {
+			OperateLog operateLog = new OperateLog();
+			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
+					: SecurityUtils.getSubject().getPrincipal().toString());
+			operateLog.setCreatetime(new Date());
+			operateLog.setOperateLog("考勤刷新: " + id);
+			operateLogService.insert(operateLog);
+		}
+		map.put("result", flag);
+		data.put("data", map);
+		data.put("status", "success");
+		return data;
 	}
 
 }

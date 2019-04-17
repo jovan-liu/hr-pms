@@ -231,14 +231,14 @@
 		
 		function leave(id){
 			if(confirm("^_^确定要用解雇吗^_^")) {
-			$.post("${appName}/emp/leave",{"id":id},
-			function(data){
-				if(data.data.result == false) {
-					alert("网络异常或服务器内部错误");
-				} else {
-					window.location.reload();
-				}
-			}, "json");
+				$.post("${appName}/emp/leave",{"id":id},
+				function(data){
+					if(data.data.result == false) {
+						alert("网络异常或服务器内部错误");
+					} else {
+						window.location.reload();
+					}
+				}, "json");
 			}
 		}
 		

@@ -133,4 +133,20 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceDao.findTodayAttendance(empNumber);
 	}
 
+	public Boolean refresh(Integer id) {
+		Attendance attendance = attendanceDao.findById(id);
+		if (attendance.getCount() < 2) {
+			attendance.setStatus(0);
+			if (attendance.getSignIn() == null) {
+				attendance.setLate(true);
+				attendance.setCountLate(1);
+			}
+			if (attendance.getSignOut() == null) {
+				attendance.setLeft(true);
+				attendance.setCountLate(attendance.getCountLate() + 1);
+			}
+		}
+		return attendanceDao.update(attendance);
+	}
+
 }

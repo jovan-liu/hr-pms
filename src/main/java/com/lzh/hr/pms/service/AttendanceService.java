@@ -16,6 +16,8 @@ public interface AttendanceService {
 	
 	Boolean update(Attendance attendance);
 	
+	Boolean refresh(Integer id);
+	
 	Page<Attendance> findByPage(AttendanceRequest request, Integer pageNum, Integer pageSize);
 	
 	Attendance findTodayAttendance(String empNumber);

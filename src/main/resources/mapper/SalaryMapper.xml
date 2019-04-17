@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.SalaryDao">
+
+	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Salary">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="emp_number" property="empNumber" jdbcType="VARCHAR"/>
+        <result column="salary_date" property="salary_date" jdbcType="VARCHAR"/>
+        <result column="work_count" property="workCount" jdbcType="INTEGER"/>
+        <result column="basic_money" property="basicMoney" jdbcType="DECIMAL"/>
+        <result column="ot_money" property="otMoney" jdbcType="DECIMAL"/>
+        <result column="leave_money" property="leaveMoney" jdbcType="DECIMAL"/>
+        <result column="bonus" property="bonus" jdbcType="DECIMAL"/>
+        <result column="late_money" property="lateMoney" jdbcType="DECIMAL"/>
+        <result column="actual_money" property="actualMoney" jdbcType="DECIMAL"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="create_user_name" property="createUserName" jdbcType="VARCHAR"/>
+        <result column="created_on" property="createdOn" jdbcType="TIMESTAMP"/>
+        <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR"/>
+        <result column="updated_on" property="updatedOn" jdbcType="TIMESTAMP"/>
+        
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    	id, emp_number, salary_date, work_count, basic_money, ot_money, leave_money, bonus, late_money, actual_money, status, create_user_name, created_on, update_user_name, updated_on
+    </sql>
+    
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_salary
+		WHERE id = #{id}
+	</select>
+	
+    <select id="countAllSalary" resultMap="BaseResultMap">
+		SELECT count(id)
+		<include refid="Base_Column_List"></include>
+		FROM emp_salary
+	</select>
+    
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_salary
+	</select>
+	
+	<insert id="save" parameterType="com.lzh.hr.pms.entity.Salary" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO emp_salary(emp_number, salary_date, work_count, basic_money, ot_money, leave_money, 
+		bonus, late_money, actual_money, status, create_user_name, created_on)
+		VALUES(#{empNumber}, #{salaryDate}, #{workCount}, #{basicMoney}, #{otMoney}, #{leaveMoney}, 
+		#{bonus}, #{lateMoney}, #{actualMoney}, #{status}, #{createUserName}, #{createdOn})
+	</insert>
+	
+	<update id="update" parameterType="com.lzh.hr.pms.entity.Salary">
+		UPDATE emp_salary
+		<set>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="updateUserName != null">
+				update_user_name = #{updateUserName},
+			</if>
+			<if test="updatedOn != null">
+				updated_on = #{updatedOn},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="batchUpdate" parameterType="com.lzh.hr.pms.entity.Salary">
+		UPDATE emp_salary
+		<set>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="updateUserName != null">
+				update_user_name = #{updateUserName},
+			</if>
+			<if test="updatedOn != null">
+				updated_on = #{updatedOn},
+			</if>
+		</set>
+		WHERE salary_date = #{salaryDate}
+	</update>
+	
+	<select id="countSalary" resultType="Long">
+		SELECT count(id) FROM emp_salary
+		<where>
+			<if test="empNumber != null"> and emp_number LIKE CONCAT('%', #{empNumber}, '%')</if>
+			<if test="beginDate != null">
+              <![CDATA[
+                 and salary_date >= #{beginDate}
+              ]]>
+
+           </if>
+           <if test="endDate != null">
+               <![CDATA[
+                 and salary_date <= #{endDate}
+               ]]>
+           </if>
+		</where>
+	</select>
+	
+	<select id="findByPage" resultType="com.lzh.hr.pms.entity.Salary">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM emp_salary 
+		<where>
+			<if test="param.empNumber != null"> and emp_number LIKE CONCAT('%', #{param.empNumber}, '%')</if>
+			<if test="param.beginDate != null">
+              <![CDATA[
+                 and salary_date >= #{param.beginDate}
+              ]]>
+
+           </if>
+           <if test="param.endDate != null">
+               <![CDATA[
+                 and salary_date <= #{param.endDate}
+               ]]>
+           </if>
+		</where>
+		<if test="limit != null">
+			<if test="start != null">LIMIT ${start},${limit} </if>
+			<if test="start == null">LIMIT ${limit} </if>
+		</if>
+	</select>
+	
+</mapper>

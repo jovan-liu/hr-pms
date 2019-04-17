@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzh.hr.pms.dao.WorkDateDao">
+
+	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Dept">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="work_date" property="workDate" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    	id, work_date
+    </sql>
+    
+    <select id="countWorkDate" resultType="Long">
+		SELECT count(*)
+		FROM work_date
+		WHERE work_day BETWEEN #{beginDate} AND #{endDate}
+	</select>
+	
+</mapper>
