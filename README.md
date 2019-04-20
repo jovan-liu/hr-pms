@@ -53,6 +53,7 @@
     
 # 导入代码到eclipse
 	安装Eclipse MARS2
+		`https://www.eclipse.org/downloads/packages/release/mars/2/eclipse-ide-java-ee-developers`
 	配置eclipse环境
 		编码
 		maven
