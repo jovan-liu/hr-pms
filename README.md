@@ -33,8 +33,13 @@
   
   
 # 配置数据库
-	安装MYSQL5，导入dump文件/SQL文件
-  
+	```
+	安装MYSQL5
+		
+		https://dev.mysql.com/downloads/mysql/
+	导入dump文件/SQL文件
+	```
+  	
 # 拉取源代码
 	源码地址
 		https://github.com/jovan-liu/hr-pms
