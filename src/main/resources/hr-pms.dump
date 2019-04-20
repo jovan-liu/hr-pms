@@ -1,0 +1,446 @@
+-- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
+--
+-- Host: localhost    Database: chanx_manage
+-- ------------------------------------------------------
+-- Server version	5.7.24
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `dept`
+--
+
+DROP TABLE IF EXISTS `dept`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dept` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+  `name` varchar(20) NOT NULL COMMENT '部门名称',
+  `desc` varchar(255) DEFAULT NULL COMMENT '部门描述',
+  `status` tinyint(1) DEFAULT NULL COMMENT '部门状态， 1可用 0不可用，要将部门设为不可用，须将部门下员工转移',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dept`
+--
+
+LOCK TABLES `dept` WRITE;
+/*!40000 ALTER TABLE `dept` DISABLE KEYS */;
+INSERT INTO `dept` VALUES (1,'人事部','人力资源',1),(3,'财务部','财务管理',1),(4,'行政部','行政管理',1);
+/*!40000 ALTER TABLE `dept` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp`
+--
+
+DROP TABLE IF EXISTS `emp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '员工ID',
+  `dept_id` int(10) DEFAULT NULL COMMENT '所属部门ID',
+  `dept_name` varchar(20) DEFAULT NULL COMMENT '所属部门名称',
+  `name` varchar(20) NOT NULL COMMENT '员工姓名',
+  `age` int(4) DEFAULT NULL COMMENT '年龄',
+  `ID_card` varchar(18) NOT NULL COMMENT '18位身份证号',
+  `phone` varchar(11) NOT NULL COMMENT '手机号码',
+  `email` varchar(50) NOT NULL COMMENT '邮箱',
+  `birthday` date DEFAULT NULL COMMENT '出生日 yyyy-MM-dd',
+  `sex` tinyint(1) NOT NULL COMMENT '性别，1男性 0女性',
+  `marital_status` tinyint(1) DEFAULT NULL COMMENT '婚否，1已婚 0未婚',
+  `place_of_birth` varchar(255) DEFAULT NULL COMMENT '出生地',
+  `current_city` varchar(255) DEFAULT NULL COMMENT '现居住地',
+  `photo` varchar(255) DEFAULT NULL COMMENT '照片URL地址',
+  `number` varchar(10) NOT NULL COMMENT '工号，用于前台登录',
+  `hiredate` date NOT NULL COMMENT '入职日期 yyyy-MM-dd',
+  `offdate` date DEFAULT NULL COMMENT '离职日期 yyyy-MM-dd',
+  `status` tinyint(1) NOT NULL COMMENT '在职状态，1在职 0离职',
+  `create_user_name` varchar(20) DEFAULT NULL COMMENT '创建人',
+  `created_on` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `update_user_name` varchar(20) DEFAULT NULL COMMENT '更新人',
+  `updated_on` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `salary` decimal(7,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp`
+--
+
+LOCK TABLES `emp` WRITE;
+/*!40000 ALTER TABLE `emp` DISABLE KEYS */;
+INSERT INTO `emp` VALUES (4,1,'人事部','sakura',20,'460033198810251144','15822223333','jovanliu.it@gmail.com','1994-01-29',0,1,'湖南省长沙市','广东省深圳市罗湖区','/upload/1554817240252.png','SKY0010','2019-04-02',NULL,1,'jovan','2019-04-09 13:40:40','jovan','2019-04-15 12:17:19',10000.00),(5,3,'财务部','ayane',24,'460033199210251144','15822223333','ayane@sky.com','1992-10-25',1,0,'湖南省益阳市','广东省深圳市宝安区','/upload/1555330753937.png','SKY0011','2019-01-01',NULL,1,'jovan','2019-04-15 12:19:08','jovan','2019-04-15 12:19:08',10000.00);
+/*!40000 ALTER TABLE `emp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp_attendance`
+--
+
+DROP TABLE IF EXISTS `emp_attendance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp_attendance` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '考勤记录ID',
+  `emp_number` varchar(10) NOT NULL COMMENT '员工编号',
+  `attendance_date` date DEFAULT NULL COMMENT '考勤日期',
+  `sign_in` time DEFAULT NULL COMMENT '签到时间',
+  `sign_out` time DEFAULT NULL COMMENT '签退时间',
+  `count` tinyint(1) DEFAULT NULL COMMENT '打卡次数',
+  `late` tinyint(1) DEFAULT NULL COMMENT '是否迟到，1迟到 0不迟到',
+  `left` tinyint(1) DEFAULT NULL COMMENT '是否早退，1早退 0不早退',
+  `work_time` float DEFAULT NULL COMMENT '工作时间',
+  `status` tinyint(4) DEFAULT NULL COMMENT '考勤状态',
+  `count_late` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_attendance`
+--
+
+LOCK TABLES `emp_attendance` WRITE;
+/*!40000 ALTER TABLE `emp_attendance` DISABLE KEYS */;
+INSERT INTO `emp_attendance` VALUES (1,'SKY0010','2019-04-10','11:13:56','11:45:02',2,1,1,0.5,0,2),(2,'SKY0010','2019-04-12','17:06:13',NULL,1,0,1,NULL,0,2),(3,'SKY0010','2019-04-16','08:59:17',NULL,1,0,1,NULL,0,1),(4,'SKY0010','2019-04-15','08:55:00','18:07:05',2,0,0,8,1,0),(5,'SKY0010','2019-04-11','08:55:00','18:07:05',2,0,0,8,1,0),(6,'SKY0010','2019-01-02','08:55:00','18:07:05',2,0,0,8,1,0),(7,'SKY0010','2019-01-03','08:55:00','18:07:05',2,0,0,8,1,0),(8,'SKY0010','2019-01-04','08:55:00','18:07:05',2,0,0,8,1,0),(9,'SKY0010','2019-01-07','08:55:00','18:07:05',2,0,0,8,1,0),(10,'SKY0010','2019-01-08','08:55:00','18:07:05',2,0,0,8,1,0),(11,'SKY0010','2019-01-09','08:55:00','18:07:05',2,0,0,8,1,0),(12,'SKY0010','2019-01-10','08:55:00','18:07:05',2,0,0,8,1,0),(13,'SKY0010','2019-01-11','08:55:00','18:07:05',2,0,0,8,1,0),(14,'SKY0010','2019-01-14','08:55:00','18:07:05',2,0,0,8,1,0),(15,'SKY0010','2019-01-15','08:55:00','18:07:05',2,0,0,8,1,0),(16,'SKY0010','2019-01-16','08:55:00','18:07:05',2,0,0,8,1,0),(17,'SKY0010','2019-01-17','08:55:00','18:07:05',2,0,0,8,1,0),(18,'SKY0010','2019-01-18','08:55:00','18:07:05',2,0,0,8,1,0),(19,'SKY0010','2019-01-21','08:55:00','18:07:05',2,0,0,8,1,0),(20,'SKY0010','2019-01-22','08:55:00','18:07:05',2,0,0,8,1,0),(21,'SKY0010','2019-01-23','08:55:00','18:07:05',2,0,0,8,1,0),(22,'SKY0010','2019-01-24','08:55:00','18:07:05',2,0,0,8,1,0),(23,'SKY0010','2019-01-25','08:55:00','18:07:05',2,0,0,8,1,0),(24,'SKY0010','2019-01-28','08:55:00','18:07:05',2,0,0,8,1,0),(25,'SKY0010','2019-01-29','08:55:00','18:07:05',2,0,0,8,1,0),(26,'SKY0010','2019-01-30','08:55:00','18:07:05',2,0,0,8,1,0),(27,'SKY0010','2019-01-31','08:55:00','18:07:05',2,0,0,8,1,0),(28,'SKY0010','2019-02-01','08:55:00','18:07:05',2,0,0,8,1,0),(29,'SKY0010','2019-02-02','08:55:00','18:07:05',2,0,0,8,1,0),(30,'SKY0010','2019-02-03','08:55:00','18:07:05',2,0,0,8,1,0),(31,'SKY0010','2019-02-11','08:55:00','18:07:05',2,0,0,8,1,0),(32,'SKY0010','2019-02-12','08:55:00','18:07:05',2,0,0,8,1,0),(33,'SKY0010','2019-02-13','08:55:00','18:07:05',2,0,0,8,1,0),(34,'SKY0010','2019-02-14','08:55:00','18:07:05',2,0,0,8,1,0),(35,'SKY0010','2019-02-15','08:55:00','18:07:05',2,0,0,8,1,0),(36,'SKY0010','2019-02-18','08:55:00','18:07:05',2,0,0,8,1,0),(37,'SKY0010','2019-02-20','08:55:00','18:07:05',2,0,0,8,1,0),(38,'SKY0010','2019-02-21','08:55:00','18:07:05',2,0,0,8,1,0),(39,'SKY0010','2019-02-22','08:55:00','18:07:05',2,0,0,8,1,0),(40,'SKY0010','2019-02-25','08:55:00','18:07:05',2,0,0,8,1,0),(41,'SKY0010','2019-02-26','08:55:00','18:07:05',2,0,0,8,1,0),(42,'SKY0010','2019-02-27','08:55:00','18:07:05',2,0,0,8,1,0),(43,'SKY0010','2019-02-28','08:55:00','18:07:05',2,0,0,8,1,0),(44,'SKY0010','2019-03-01','08:55:00','18:07:05',2,0,0,8,1,0),(45,'SKY0010','2019-03-04','08:55:00','18:07:05',2,0,0,8,1,0),(46,'SKY0010','2019-03-05','08:55:00','18:07:05',2,0,0,8,1,0),(47,'SKY0010','2019-03-06','08:55:00','18:07:05',2,0,0,8,1,0),(48,'SKY0010','2019-03-07','08:55:00','18:07:05',2,0,0,8,1,0),(49,'SKY0010','2019-03-08','08:55:00','18:07:05',2,0,0,8,1,0),(50,'SKY0010','2019-03-11','08:55:00','18:07:05',2,0,0,8,1,0),(51,'SKY0010','2019-03-12','08:55:00','18:07:05',2,0,0,8,1,0),(52,'SKY0010','2019-03-13','08:55:00','18:07:05',2,0,0,8,1,0),(53,'SKY0010','2019-03-14','08:55:00','18:07:05',2,0,0,8,1,0),(54,'SKY0010','2019-03-15','08:55:00','18:07:05',2,0,0,8,1,0),(55,'SKY0010','2019-03-18','08:55:00','18:07:05',2,0,0,8,1,0),(56,'SKY0010','2019-03-19','08:55:00','18:07:05',2,0,0,8,1,0),(57,'SKY0010','2019-03-20','08:55:00','18:07:05',2,0,0,8,1,0),(58,'SKY0010','2019-03-21','08:55:00','18:07:05',2,0,0,8,1,0),(59,'SKY0010','2019-03-22','08:55:00','18:07:05',2,0,0,8,1,0),(60,'SKY0010','2019-03-25','08:55:00','18:07:05',2,0,0,8,1,0),(61,'SKY0010','2019-03-26','08:55:00','18:07:05',2,0,0,8,1,0),(62,'SKY0010','2019-03-27','08:55:00','18:07:05',2,0,0,8,1,0),(63,'SKY0010','2019-03-28','08:55:00','18:07:05',2,0,0,8,1,0),(64,'SKY0010','2019-03-29','08:55:00','18:07:05',2,0,0,8,1,0),(65,'SKY0010','2019-04-01','08:55:00','18:07:05',2,0,0,8,1,0),(66,'SKY0010','2019-04-02','08:55:00','18:07:05',2,0,0,8,1,0),(67,'SKY0010','2019-04-03','08:55:00','18:07:05',2,0,0,8,1,0),(68,'SKY0010','2019-04-04','08:55:00','18:07:05',2,0,0,8,1,0),(69,'SKY0011','2019-01-02','08:55:00','18:07:05',2,0,0,8,1,0),(70,'SKY0011','2019-01-03','08:55:00','18:07:05',2,0,0,8,1,0),(71,'SKY0011','2019-01-04','08:55:00','18:07:05',2,0,0,8,1,0),(72,'SKY0011','2019-01-07','08:55:00','18:07:05',2,0,0,8,1,0),(73,'SKY0011','2019-01-08','08:55:00','18:07:05',2,0,0,8,1,0),(74,'SKY0011','2019-01-09','08:55:00','18:07:05',2,0,0,8,1,0),(75,'SKY0011','2019-01-10','08:55:00','18:07:05',2,0,0,8,1,0),(76,'SKY0011','2019-01-11','08:55:00','18:07:05',2,0,0,8,1,0),(77,'SKY0011','2019-01-14','08:55:00','18:07:05',2,0,0,8,1,0),(78,'SKY0011','2019-01-15','08:55:00','18:07:05',2,0,0,8,1,0),(79,'SKY0011','2019-01-16','08:55:00','18:07:05',2,0,0,8,1,0),(80,'SKY0011','2019-01-17','08:55:00','18:07:05',2,0,0,8,1,0),(81,'SKY0011','2019-01-18','08:55:00','18:07:05',2,0,0,8,1,0),(82,'SKY0011','2019-01-21','08:55:00','18:07:05',2,0,0,8,1,0),(83,'SKY0011','2019-01-22','08:55:00','18:07:05',2,0,0,8,1,0),(84,'SKY0011','2019-01-23','08:55:00','18:07:05',2,0,0,8,1,0),(85,'SKY0011','2019-01-24','08:55:00','18:07:05',2,0,0,8,1,0),(86,'SKY0011','2019-01-25','08:55:00','18:07:05',2,0,0,8,1,0),(87,'SKY0011','2019-01-28','08:55:00','18:07:05',2,0,0,8,1,0),(88,'SKY0011','2019-01-29','08:55:00','18:07:05',2,0,0,8,1,0),(89,'SKY0011','2019-01-30','08:55:00','18:07:05',2,0,0,8,1,0),(90,'SKY0011','2019-01-31','08:55:00','18:07:05',2,0,0,8,1,0),(91,'SKY0011','2019-02-01','08:55:00','18:07:05',2,0,0,8,1,0),(92,'SKY0011','2019-02-02','08:55:00','18:07:05',2,0,0,8,1,0),(93,'SKY0011','2019-02-03','08:55:00','18:07:05',2,0,0,8,1,0),(94,'SKY0011','2019-02-11','08:55:00','18:07:05',2,0,0,8,1,0),(95,'SKY0011','2019-02-12','08:55:00','18:07:05',2,0,0,8,1,0),(96,'SKY0011','2019-02-13','08:55:00','18:07:05',2,0,0,8,1,0),(97,'SKY0011','2019-02-14','08:55:00','18:07:05',2,0,0,8,1,0),(98,'SKY0011','2019-02-15','08:55:00','18:07:05',2,0,0,8,1,0),(99,'SKY0011','2019-02-18','08:55:00','18:07:05',2,0,0,8,1,0),(100,'SKY0011','2019-02-20','08:55:00','18:07:05',2,0,0,8,1,0),(101,'SKY0011','2019-02-21','08:55:00','18:07:05',2,0,0,8,1,0),(102,'SKY0011','2019-02-22','08:55:00','18:07:05',2,0,0,8,1,0),(103,'SKY0011','2019-02-25','08:55:00','18:07:05',2,0,0,8,1,0),(104,'SKY0011','2019-02-26','08:55:00','18:07:05',2,0,0,8,1,0),(105,'SKY0011','2019-02-27','08:55:00','18:07:05',2,0,0,8,1,0),(106,'SKY0011','2019-02-28','08:55:00','18:07:05',2,0,0,8,1,0),(107,'SKY0011','2019-03-01','08:55:00','18:07:05',2,0,0,8,1,0),(108,'SKY0011','2019-03-04','08:55:00','18:07:05',2,0,0,8,1,0),(109,'SKY0011','2019-03-05','08:55:00','18:07:05',2,0,0,8,1,0),(110,'SKY0011','2019-03-06','08:55:00','18:07:05',2,0,0,8,1,0),(111,'SKY0011','2019-03-07','08:55:00','18:07:05',2,0,0,8,1,0),(112,'SKY0011','2019-03-08','08:55:00','18:07:05',2,0,0,8,1,0),(113,'SKY0011','2019-03-11','08:55:00','18:07:05',2,0,0,8,1,0),(114,'SKY0011','2019-03-12','08:55:00','18:07:05',2,0,0,8,1,0),(115,'SKY0011','2019-03-13','08:55:00','18:07:05',2,0,0,8,1,0),(116,'SKY0011','2019-03-14','08:55:00','18:07:05',2,0,0,8,1,0),(117,'SKY0011','2019-03-15','08:55:00','18:07:05',2,0,0,8,1,0),(118,'SKY0011','2019-03-18','08:55:00','18:07:05',2,0,0,8,1,0),(119,'SKY0011','2019-03-19','08:55:00','18:07:05',2,0,0,8,1,0),(120,'SKY0011','2019-03-20','08:55:00','18:07:05',2,0,0,8,1,0),(121,'SKY0011','2019-03-21','08:55:00','18:07:05',2,0,0,8,1,0),(122,'SKY0011','2019-03-22','08:55:00','18:07:05',2,0,0,8,1,0),(123,'SKY0011','2019-03-25','08:55:00','18:07:05',2,0,0,8,1,0),(124,'SKY0011','2019-03-26','08:55:00','18:07:05',2,0,0,8,1,0),(125,'SKY0011','2019-03-27','08:55:00','18:07:05',2,0,0,8,1,0),(126,'SKY0011','2019-03-28','08:55:00','18:07:05',2,0,0,8,1,0),(127,'SKY0011','2019-03-29','08:55:00','18:07:05',2,0,0,8,1,0),(128,'SKY0011','2019-04-01','08:55:00','18:07:05',2,0,0,8,1,0),(129,'SKY0011','2019-04-02','08:55:00','18:07:05',2,0,0,8,1,0),(130,'SKY0011','2019-04-03','08:55:00','18:07:05',2,0,0,8,1,0),(131,'SKY0011','2019-04-04','08:55:00','18:07:05',2,0,0,8,1,0),(132,'SKY0010','2019-04-20','19:13:05',NULL,1,1,NULL,NULL,NULL,1);
+/*!40000 ALTER TABLE `emp_attendance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp_leave`
+--
+
+DROP TABLE IF EXISTS `emp_leave`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp_leave` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '考勤记录ID',
+  `emp_number` varchar(10) NOT NULL COMMENT '员工编号',
+  `type` tinyint(1) DEFAULT NULL COMMENT '请假类型 1事假 2病假 3年假',
+  `start_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '结束时间',
+  `reason` varchar(255) DEFAULT NULL COMMENT '请假理由',
+  `apply_time` timestamp NULL DEFAULT NULL COMMENT '申请时间',
+  `reply_time` timestamp NULL DEFAULT NULL COMMENT '回复时间',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态 0待审核 1已通过 2未通过',
+  `create_user_name` varchar(20) DEFAULT NULL COMMENT '创建人',
+  `created_on` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `update_user_name` varchar(20) DEFAULT NULL COMMENT '更新人',
+  `updated_on` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_leave`
+--
+
+LOCK TABLES `emp_leave` WRITE;
+/*!40000 ALTER TABLE `emp_leave` DISABLE KEYS */;
+INSERT INTO `emp_leave` VALUES (1,'SKY0010',1,'2019-04-11 01:00:00','2019-04-11 01:30:00','请假','2019-04-11 01:38:45','2019-04-11 09:10:07',1,'SKY0010','2019-04-11 01:38:45','jovan','2019-04-11 09:10:07');
+/*!40000 ALTER TABLE `emp_leave` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp_number`
+--
+
+DROP TABLE IF EXISTS `emp_number`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp_number` (
+  `number` int(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_number`
+--
+
+LOCK TABLES `emp_number` WRITE;
+/*!40000 ALTER TABLE `emp_number` DISABLE KEYS */;
+INSERT INTO `emp_number` VALUES (11);
+/*!40000 ALTER TABLE `emp_number` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp_overtime`
+--
+
+DROP TABLE IF EXISTS `emp_overtime`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp_overtime` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '考勤记录ID',
+  `emp_number` varchar(10) NOT NULL COMMENT '员工编号',
+  `start_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '结束时间',
+  `reason` varchar(255) DEFAULT NULL COMMENT '加班理由',
+  `apply_time` timestamp NULL DEFAULT NULL COMMENT '申请时间',
+  `reply_time` timestamp NULL DEFAULT NULL COMMENT '回复时间',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态 0待审核 1已通过 2未通过',
+  `create_user_name` varchar(20) DEFAULT NULL COMMENT '创建人',
+  `created_on` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `update_user_name` varchar(20) DEFAULT NULL COMMENT '更新人',
+  `updated_on` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_overtime`
+--
+
+LOCK TABLES `emp_overtime` WRITE;
+/*!40000 ALTER TABLE `emp_overtime` DISABLE KEYS */;
+INSERT INTO `emp_overtime` VALUES (1,'SKY0010','2019-04-10 07:00:00','2019-04-10 08:30:00','没事干加班玩玩','2019-04-10 08:41:28','2019-04-11 09:37:40',2,'SKY0010','2019-04-10 08:41:28','jovan','2019-04-11 09:37:40');
+/*!40000 ALTER TABLE `emp_overtime` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp_salary`
+--
+
+DROP TABLE IF EXISTS `emp_salary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp_salary` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '工资单记录ID',
+  `emp_number` varchar(10) NOT NULL COMMENT '员工编号',
+  `salary_date` varchar(10) DEFAULT NULL COMMENT 'yyyy-MM',
+  `work_count` int(4) DEFAULT NULL COMMENT '正常上班天数',
+  `basic_money` decimal(7,2) DEFAULT NULL COMMENT '基本薪资（联表查询员工表）',
+  `ot_money` decimal(7,2) DEFAULT NULL COMMENT '加班薪资（加班时间*时薪）',
+  `leave_money` decimal(7,2) DEFAULT NULL COMMENT '请假扣款（事假扣除当天全部工资，病假扣除当天80%工资）',
+  `bonus` decimal(7,2) DEFAULT NULL COMMENT '全勤奖',
+  `late_money` decimal(7,2) DEFAULT NULL COMMENT '迟到/早退扣款',
+  `actual_money` decimal(7,2) DEFAULT NULL COMMENT '实际发放（基本薪资+加班薪资-请假扣款[+-全勤]）',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态 1已发 0未发',
+  `create_user_name` varchar(20) DEFAULT NULL COMMENT '创建人SYSTEM',
+  `created_on` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `update_user_name` varchar(20) DEFAULT NULL COMMENT '更新人',
+  `updated_on` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_salary`
+--
+
+LOCK TABLES `emp_salary` WRITE;
+/*!40000 ALTER TABLE `emp_salary` DISABLE KEYS */;
+INSERT INTO `emp_salary` VALUES (1,'SKY0010','2019-02',21,10000.00,0.00,0.00,0.00,0.00,10000.00,1,'SYSTEM','2019-04-15 13:34:39','jovan','2019-04-20 10:30:18'),(8,'SKY0010','2019-03',21,10000.00,0.00,0.00,200.00,0.00,10200.00,1,'SYSTEM','2019-04-20 10:10:19','jovan','2019-04-20 10:10:37'),(9,'SKY0011','2019-03',21,10000.00,0.00,0.00,200.00,0.00,10200.00,1,'SYSTEM','2019-04-20 10:10:19','jovan','2019-04-20 10:10:47');
+/*!40000 ALTER TABLE `emp_salary` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `operate_log`
+--
+
+DROP TABLE IF EXISTS `operate_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `operate_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `worker` varchar(255) DEFAULT NULL,
+  `operate_log` varchar(5000) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_createtime` (`createtime`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=469 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `operate_log`
+--
+
+LOCK TABLES `operate_log` WRITE;
+/*!40000 ALTER TABLE `operate_log` DISABLE KEYS */;
+INSERT INTO `operate_log` VALUES (149,'yanzhu','yanzhu登录','2018-09-03 19:22:15'),(150,'jovan','jovan登录','2018-09-05 14:40:13'),(151,'jovan','经书保存成功:大悲咒','2018-09-05 14:42:30'),(152,'jovan','经书保存成功:心经','2018-09-05 14:46:35'),(153,'jovan','经书更新:金刚经','2018-09-05 14:51:28'),(154,'yanzhu','yanzhu登录','2018-09-09 13:54:22'),(155,'yanzhu','yanzhu登录','2018-09-09 21:13:29'),(156,'jovan','jovan登录','2018-09-18 16:15:11'),(157,'admin','admin登录','2018-09-18 16:16:50'),(158,'jovan','jovan登录','2018-09-20 10:49:23'),(159,'jovan','jovan登录','2018-09-20 10:49:32'),(160,'qianru','qianru登录','2018-09-20 10:58:31'),(161,'jovan','jovan登录','2018-09-21 16:36:34'),(162,'jovan','jovan登录','2018-09-21 17:40:23'),(163,'qianru','qianru登录','2018-10-11 11:10:34'),(164,'jovan','jovan登录','2018-10-11 22:13:45'),(165,'jovan','jovan登录','2018-10-11 22:15:06'),(166,'jovan','jovan登录','2018-10-11 22:15:28'),(167,'jovan','帖子更新标签:65','2018-10-11 22:16:07'),(168,'jovan','帖子更新精华:65','2018-10-11 22:16:14'),(169,'jovan','帖子更新标签:62','2018-10-11 22:16:40'),(170,'jovan','帖子更新精华:62','2018-10-11 22:16:44'),(171,'qianru','qianru登录','2018-10-15 13:00:14'),(172,'jovan','jovan登录','2018-10-15 13:06:34'),(173,'jovan','帖子更新精华:88','2018-10-15 13:10:29'),(174,'jovan','帖子更新精华:93','2018-10-15 13:21:41'),(175,'jovan','jovan登录','2018-10-16 12:33:54'),(176,'jovan','jovan登录','2018-10-16 12:41:12'),(177,'jovan','jovan登录','2018-10-19 14:54:07'),(178,'jovan','jovan登录','2018-10-19 14:54:25'),(179,'jovan','jovan登录','2018-10-19 14:54:31'),(180,'jovan','jovan登录','2018-10-19 17:14:31'),(181,'jovan','jovan登录','2018-10-25 11:24:30'),(182,'jovan','jovan登录','2018-10-30 17:05:21'),(183,'admin','admin登录','2019-04-03 18:54:57'),(184,'admin','admin登录','2019-04-03 18:57:53'),(185,'admin','admin登录','2019-04-03 19:09:02'),(186,'jovan','jovan登录','2019-04-03 20:01:45'),(187,'jovan','用户：3修改密码','2019-04-03 20:04:42'),(188,'jovan','用户：3修改密码','2019-04-03 20:05:30'),(189,'jovan','删除权限ID：10','2019-04-03 20:24:16'),(190,'jovan','jovan登录','2019-04-03 20:30:46'),(191,'admin','admin登录','2019-04-03 20:31:39'),(192,'admin','修改用户ID2的角色为：1','2019-04-03 20:32:14'),(193,'admin','用户：3修改密码','2019-04-03 20:32:31'),(194,'admin','新增角色：test-role(test role)','2019-04-03 20:34:38'),(195,'admin','修改角色：test-role(test role)','2019-04-03 20:34:49'),(196,'admin','删除角色：roleId3','2019-04-03 20:34:58'),(197,'admin','修改权限：post-list-aa　　描述:论坛列表','2019-04-03 20:35:31'),(198,'admin','删除权限ID：9','2019-04-03 20:35:37'),(199,'admin','删除权限ID：8','2019-04-03 20:36:07'),(200,'jovan','jovan登录','2019-04-03 20:55:13'),(201,'jovan','jovan登录','2019-04-03 20:57:42'),(202,'jovan','jovan登录','2019-04-03 21:01:53'),(203,'qianru','qianru登录','2019-04-03 21:09:22'),(204,'jovan','jovan登录','2019-04-04 10:36:54'),(205,'jovan','添加权限：dept-list　　描述:部门列表','2019-04-04 10:37:13'),(206,'jovan','jovan登录','2019-04-04 21:19:35'),(207,'jovan','jovan登录','2019-04-04 21:28:41'),(208,'jovan','jovan登录','2019-04-04 21:31:15'),(209,'jovan','jovan登录','2019-04-04 21:33:48'),(210,'jovan','jovan登录','2019-04-04 21:42:44'),(211,'jovan','jovan登录','2019-04-04 21:45:41'),(212,'jovan','jovan登录','2019-04-07 09:56:03'),(213,'jovan','jovan登录','2019-04-07 10:00:47'),(214,'jovan','jovan登录','2019-04-07 10:04:01'),(215,'jovan','jovan登录','2019-04-07 10:09:04'),(216,'jovan','jovan登录','2019-04-07 10:13:25'),(217,'jovan','jovan登录','2019-04-07 10:26:39'),(218,'jovan','部门保存成功:财务部','2019-04-07 10:26:51'),(219,'jovan','jovan登录','2019-04-07 10:32:59'),(220,'jovan','部门更新:财务部','2019-04-07 10:38:43'),(221,'jovan','删除部门序号:2','2019-04-07 10:39:15'),(222,'yanzhu','yanzhu登录','2019-04-07 10:39:58'),(223,'yanzhu','yanzhu登录','2019-04-07 10:40:07'),(224,'yanzhu','yanzhu登录','2019-04-07 10:40:30'),(225,'jovan','jovan登录','2019-04-07 10:50:00'),(226,'jovan','添加权限：account　　描述:超级管理员权限','2019-04-07 10:50:20'),(227,'jovan','添加权限：hr　　描述:人事权限','2019-04-07 10:50:54'),(228,'jovan','添加权限：emp　　描述:普通员工权限','2019-04-07 10:51:09'),(229,'jovan','jovan登录','2019-04-07 11:04:16'),(230,'jovan','删除权限ID：6','2019-04-07 11:04:41'),(231,'jovan','删除权限ID：7','2019-04-07 11:04:48'),(232,'jovan','添加权限：log　　描述:日志权限','2019-04-07 11:05:13'),(233,'jovan','新增角色：人事使用(人事管理使用角色)','2019-04-07 11:06:22'),(234,'jovan','修改用户ID3的角色为：4','2019-04-07 11:06:45'),(235,'jovan','添加权限：emp-list　　描述:员工管理列表','2019-04-07 11:07:36'),(236,'jovan','添加权限：emp-attendance-list　　描述:员工考勤管理列表','2019-04-07 11:07:57'),(237,'jovan','添加权限：emp-ot-list　　描述:员工加班管理列表','2019-04-07 11:08:17'),(238,'jovan','添加权限：emp-leave-list　　描述:员工请假管理列表','2019-04-07 11:09:05'),(239,'jovan','添加权限：emp-salary-list　　描述:员工薪资管理列表','2019-04-07 11:09:21'),(240,'jovan','添加权限：attendance-list　　描述:考勤管理','2019-04-07 11:10:22'),(241,'jovan','添加权限：ot-list　　描述:加班管理','2019-04-07 11:10:41'),(242,'jovan','添加权限：leave-list　　描述:请假管理','2019-04-07 11:10:55'),(243,'jovan','添加权限：salary-list　　描述:薪资管理','2019-04-07 11:11:12'),(244,'jovan','新增角色：员工使用(普通员工管理使用)','2019-04-07 11:13:06'),(245,'jovan','修改角色：人事使用(人事管理使用角色)','2019-04-07 11:14:22'),(246,'jovan','修改用户ID4的角色为：5','2019-04-07 11:14:52'),(247,'yanzhu','yanzhu登录','2019-04-07 11:15:05'),(248,'qianru','qianru登录','2019-04-07 11:15:22'),(249,'jovan','jovan登录','2019-04-07 11:25:30'),(250,'jovan','部门保存成功:财务部','2019-04-07 11:31:51'),(251,'jovan','部门更新:财务部','2019-04-07 11:31:59'),(252,'jovan','部门更新:财务部','2019-04-07 11:37:23'),(253,'jovan','jovan登录','2019-04-07 11:39:26'),(254,'jovan','部门更新:财务部','2019-04-07 11:40:36'),(255,'jovan','jovan登录','2019-04-08 19:14:28'),(256,'jovan','jovan登录','2019-04-08 21:11:07'),(257,'jovan','jovan登录','2019-04-09 10:33:25'),(258,'jovan','jovan登录','2019-04-09 10:53:41'),(259,'jovan','部门保存成功:行政部','2019-04-09 11:01:45'),(260,'jovan','jovan登录','2019-04-09 11:14:09'),(261,'jovan','jovan登录','2019-04-09 11:22:59'),(262,'jovan','部门保存成功:刘某','2019-04-09 11:27:40'),(263,'jovan','jovan登录','2019-04-09 11:33:59'),(264,'jovan','jovan登录','2019-04-09 11:45:55'),(265,'jovan','jovan登录','2019-04-09 12:37:15'),(266,'jovan','jovan登录','2019-04-09 13:44:19'),(267,'jovan','jovan登录','2019-04-09 14:51:32'),(268,'jovan','jovan登录','2019-04-09 14:58:44'),(269,'jovan','jovan登录','2019-04-09 15:28:38'),(270,'jovan','jovan登录','2019-04-09 15:33:38'),(271,'jovan','部门更新:ayane','2019-04-09 15:34:23'),(272,'jovan','jovan登录','2019-04-09 16:00:07'),(273,'jovan','jovan登录','2019-04-09 17:36:50'),(274,'jovan','jovan登录','2019-04-09 17:43:57'),(275,'jovan','jovan登录','2019-04-09 17:48:27'),(276,'jovan','jovan登录','2019-04-09 17:52:14'),(277,'jovan','jovan登录','2019-04-09 17:55:00'),(278,'jovan','jovan登录','2019-04-09 19:16:34'),(279,'jovan','jovan登录','2019-04-09 20:10:02'),(280,'jovan','jovan登录','2019-04-09 21:26:17'),(281,'jovan','部门更新:ayane','2019-04-09 21:26:45'),(282,'jovan','部门更新:ayane','2019-04-09 21:29:15'),(283,'jovan','部门更新:ayane','2019-04-09 21:29:35'),(284,'jovan','jovan登录','2019-04-09 21:38:51'),(285,'jovan','部门更新:ayane','2019-04-09 21:39:29'),(286,'jovan','部门更新:ayane','2019-04-09 21:39:56'),(287,'jovan','部门保存成功:sakura','2019-04-09 21:40:40'),(288,'SKY0010','SKY0010登录','2019-04-10 10:57:07'),(289,'jovan','jovan登录','2019-04-10 11:11:36'),(290,'SKY0010','SKY0010登录','2019-04-10 11:11:47'),(291,'SKY0010','SKY0010登录','2019-04-10 11:13:50'),(292,'SKY0010','考勤保存成功:SKY0010','2019-04-10 11:13:56'),(293,'SKY0010','SKY0010登录','2019-04-10 11:32:11'),(294,'SKY0010','SKY0010登录','2019-04-10 11:40:23'),(295,'SKY0010','SKY0010登录','2019-04-10 11:44:56'),(296,'SKY0010','考勤更新:SKY0010','2019-04-10 11:45:02'),(297,'SKY0010','SKY0010登录','2019-04-10 11:50:10'),(298,'SKY0010','SKY0010登录','2019-04-10 13:42:32'),(299,'SKY0010','SKY0010登录','2019-04-10 13:48:25'),(300,'SKY0010','SKY0010登录','2019-04-10 15:24:44'),(301,'SKY0010','SKY0010登录','2019-04-10 15:38:03'),(302,'jovan','jovan登录','2019-04-10 15:38:16'),(303,'jovan','修改权限：overtime-list　　描述:加班管理','2019-04-10 15:38:37'),(304,'SKY0010','SKY0010登录','2019-04-10 15:38:44'),(305,'SKY0010','SKY0010登录','2019-04-10 15:47:44'),(306,'SKY0010','SKY0010登录','2019-04-10 15:50:18'),(307,'SKY0010','SKY0010登录','2019-04-10 16:12:43'),(308,'SKY0010','SKY0010登录','2019-04-10 16:16:35'),(309,'SKY0010','SKY0010登录','2019-04-10 16:22:21'),(310,'SKY0010','SKY0010登录','2019-04-10 16:33:32'),(311,'SKY0010','SKY0010登录','2019-04-10 16:38:31'),(312,'SKY0010','SKY0010登录','2019-04-10 16:41:15'),(313,'SKY0010','加班保存成功:SKY0010','2019-04-10 16:41:29'),(314,'SKY0010','SKY0010登录','2019-04-10 16:50:42'),(315,'jovan','jovan登录','2019-04-10 16:53:28'),(316,'jovan','jovan登录','2019-04-10 16:55:48'),(317,'SKY0010','SKY0010登录','2019-04-10 16:56:11'),(318,'SKY0010','SKY0010登录','2019-04-11 09:35:14'),(319,'SKY0010','请假保存成功:SKY0010','2019-04-11 09:38:45'),(320,'SKY0010','SKY0010登录','2019-04-11 14:54:40'),(321,'jovan','jovan登录','2019-04-11 14:54:55'),(322,'jovan','jovan登录','2019-04-11 14:56:30'),(323,'jovan','jovan登录','2019-04-11 16:12:58'),(324,'jovan','jovan登录','2019-04-11 16:16:51'),(325,'jovan','jovan登录','2019-04-11 16:19:16'),(326,'jovan','修改权限：emp-overtime-list　　描述:员工加班管理列表','2019-04-11 16:21:48'),(327,'jovan','jovan登录','2019-04-11 16:52:47'),(328,'jovan','加班更新:null','2019-04-11 16:53:17'),(329,'jovan','请假更新:null','2019-04-11 16:53:33'),(330,'jovan','请假更新:null','2019-04-11 16:53:45'),(331,'jovan','请假更新:null','2019-04-11 16:54:03'),(332,'jovan','请假更新:null','2019-04-11 17:00:14'),(333,'jovan','请假更新:null','2019-04-11 17:00:17'),(334,'jovan','请假更新:null','2019-04-11 17:00:22'),(335,'jovan','请假更新:null','2019-04-11 17:00:22'),(336,'jovan','请假更新:null','2019-04-11 17:00:22'),(337,'jovan','请假更新:null','2019-04-11 17:00:24'),(338,'jovan','请假更新:null','2019-04-11 17:00:24'),(339,'jovan','请假更新:null','2019-04-11 17:00:25'),(340,'jovan','请假更新:null','2019-04-11 17:00:25'),(341,'jovan','请假更新:null','2019-04-11 17:01:09'),(342,'jovan','请假更新:null','2019-04-11 17:01:11'),(343,'jovan','请假更新:null','2019-04-11 17:01:11'),(344,'jovan','请假更新:null','2019-04-11 17:01:12'),(345,'jovan','请假更新:null','2019-04-11 17:01:12'),(346,'jovan','请假更新:null','2019-04-11 17:01:12'),(347,'jovan','请假更新:null','2019-04-11 17:01:13'),(348,'jovan','请假更新:null','2019-04-11 17:01:30'),(349,'jovan','请假更新:null','2019-04-11 17:02:22'),(350,'jovan','请假更新:null','2019-04-11 17:04:06'),(351,'jovan','请假更新:null','2019-04-11 17:05:45'),(352,'jovan','请假更新:null','2019-04-11 17:06:52'),(353,'jovan','请假更新:null','2019-04-11 17:07:21'),(354,'jovan','请假更新:null','2019-04-11 17:08:23'),(355,'jovan','请假更新:null','2019-04-11 17:10:07'),(356,'jovan','加班更新:null','2019-04-11 17:16:34'),(357,'jovan','加班更新:null','2019-04-11 17:18:15'),(358,'jovan','加班更新:null','2019-04-11 17:18:39'),(359,'jovan','jovan登录','2019-04-11 17:32:04'),(360,'jovan','加班更新:null','2019-04-11 17:32:53'),(361,'jovan','加班更新:null','2019-04-11 17:34:12'),(362,'jovan','加班更新:null','2019-04-11 17:37:26'),(363,'jovan','加班更新:null','2019-04-11 17:37:40'),(364,'jovan','jovan登录','2019-04-11 21:36:07'),(365,'jovan','jovan登录','2019-04-12 15:26:14'),(366,'jovan','jovan登录','2019-04-12 15:28:19'),(367,'jovan','jovan登录','2019-04-12 15:46:44'),(368,'jovan','部门更新:刘某','2019-04-12 15:47:26'),(369,'jovan','jovan登录','2019-04-12 15:59:31'),(370,'jovan','部门更新:刘某','2019-04-12 15:59:51'),(371,'jovan','部门更新:jovan','2019-04-12 16:00:04'),(372,'jovan','部门更新:jovan','2019-04-12 16:00:24'),(373,'jovan','jovan登录','2019-04-12 16:09:49'),(374,'jovan','新增角色：财务使用(财务管理工资单)','2019-04-12 16:11:40'),(375,'jovan','修改用户ID8的角色为：5','2019-04-12 16:12:29'),(376,'jovan','修改用户ID4的角色为：6','2019-04-12 16:13:30'),(377,'jovan','用户：4修改密码','2019-04-12 16:13:56'),(378,'qianru','qianru登录','2019-04-12 16:14:11'),(379,'jovan','jovan登录','2019-04-12 16:14:27'),(380,'jovan','修改角色：财务使用(财务管理工资单)','2019-04-12 16:15:52'),(381,'qianru','qianru登录','2019-04-12 16:16:00'),(382,'yanzhu','yanzhu登录','2019-04-12 16:16:19'),(383,'jovan','jovan登录','2019-04-12 16:16:42'),(384,'jovan','修改角色：人事使用(人事管理使用角色)','2019-04-12 16:16:54'),(385,'jovan','jovan登录','2019-04-12 16:29:52'),(386,'jovan','jovan登录','2019-04-12 16:30:23'),(387,'jovan','员工解雇，序号:1','2019-04-12 16:30:58'),(388,'SKY0004','SKY0004登录','2019-04-12 16:31:18'),(389,'SKY0003','SKY0003登录','2019-04-12 16:32:07'),(390,'SKY0006','SKY0006登录','2019-04-12 16:32:22'),(391,'jovan','jovan登录','2019-04-12 16:36:42'),(392,'jovan','jovan登录','2019-04-12 16:57:03'),(393,'jovan','jovan登录','2019-04-12 16:58:51'),(394,'jovan','员工解雇，序号:2','2019-04-12 16:59:37'),(395,'jovan','jovan登录','2019-04-12 17:00:08'),(396,'jovan','删除角色：roleId2','2019-04-12 17:04:35'),(397,'jovan','修改角色：admin(管理员)','2019-04-12 17:04:56'),(398,'jovan','部门更新:财务部','2019-04-12 17:05:22'),(399,'SKY0010','SKY0010登录','2019-04-12 17:06:06'),(400,'SKY0010','考勤保存成功:SKY0010','2019-04-12 17:06:13'),(401,'jovan','jovan登录','2019-04-12 17:26:01'),(402,'yanzhu','yanzhu登录','2019-04-12 17:30:42'),(403,'qianru','qianru登录','2019-04-12 17:32:45'),(404,'jovan','jovan登录','2019-04-12 17:33:40'),(405,'jovan','jovan登录','2019-04-14 14:19:45'),(406,'jovan','jovan登录','2019-04-14 14:21:48'),(407,'jovan','jovan登录','2019-04-14 14:22:05'),(408,'jovan','jovan登录','2019-04-14 14:22:43'),(409,'yanzhu','yanzhu登录','2019-04-14 14:23:07'),(410,'qianru','qianru登录','2019-04-14 14:23:31'),(411,'SKY0010','SKY0010登录','2019-04-14 14:24:01'),(412,'jovan','jovan登录','2019-04-14 14:25:08'),(413,'jovan','jovan登录','2019-04-14 14:25:13'),(414,'yanzhu','yanzhu登录','2019-04-14 14:26:12'),(415,'qianru','qianru登录','2019-04-14 14:27:51'),(416,'SKY0010','SKY0010登录','2019-04-14 14:28:36'),(417,'qianru','qianru登录','2019-04-14 14:32:30'),(418,'yanzhu','yanzhu登录','2019-04-14 14:32:51'),(419,'jovan','jovan登录','2019-04-14 14:38:30'),(420,'jovan','jovan登录','2019-04-15 16:12:24'),(421,'yanzhu','yanzhu登录','2019-04-15 16:16:05'),(422,'qianru','qianru登录','2019-04-15 16:16:47'),(423,'SKY0010','SKY0010登录','2019-04-15 16:17:04'),(424,'jovan','jovan登录','2019-04-15 20:16:50'),(425,'jovan','员工更新:sakura','2019-04-15 20:17:19'),(426,'jovan','员工保存成功:ayane','2019-04-15 20:19:08'),(427,'jovan','jovan登录','2019-04-15 20:21:56'),(428,'jovan','jovan登录','2019-04-15 21:51:02'),(429,'SKY0010','SKY0010登录','2019-04-15 21:52:06'),(430,'SKY0010','SKY0010登录','2019-04-15 21:55:06'),(431,'SKY0010','SKY0010登录','2019-04-16 08:33:20'),(432,'jovan','jovan登录','2019-04-16 08:45:17'),(433,'SKY0010','SKY0010登录','2019-04-16 08:59:09'),(434,'SKY0010','考勤保存成功:SKY0010','2019-04-16 08:59:17'),(435,'jovan','jovan登录','2019-04-16 08:59:29'),(436,'jovan','jovan登录','2019-04-16 18:49:28'),(437,'jovan','jovan登录','2019-04-16 19:43:51'),(438,'jovan','考勤刷新: 2','2019-04-16 19:44:07'),(439,'jovan','考勤刷新: 2','2019-04-16 19:44:26'),(440,'jovan','考勤刷新: 2','2019-04-16 19:45:41'),(441,'jovan','jovan登录','2019-04-16 20:08:22'),(442,'jovan','jovan登录','2019-04-17 12:46:00'),(443,'jovan','jovan登录','2019-04-18 14:42:59'),(444,'jovan','jovan登录','2019-04-18 15:38:19'),(445,'SKY0010','SKY0010登录','2019-04-18 16:20:48'),(446,'SKY0010','SKY0010登录','2019-04-18 16:20:52'),(447,'jovan','jovan登录','2019-04-18 16:23:24'),(448,'jovan','jovan登录','2019-04-18 16:31:10'),(449,'jovan','jovan登录','2019-04-18 16:37:47'),(450,'jovan','jovan登录','2019-04-18 16:39:55'),(451,'jovan','jovan登录','2019-04-18 16:56:26'),(452,'SKY0010','SKY0010登录','2019-04-18 16:56:35'),(453,'jovan','jovan登录','2019-04-20 17:48:54'),(454,'jovan','jovan登录','2019-04-20 17:55:23'),(455,'jovan','薪资生成成功','2019-04-20 18:03:20'),(456,'jovan','jovan登录','2019-04-20 18:10:09'),(457,'jovan','薪资生成成功','2019-04-20 18:10:20'),(458,'jovan','薪资更新:null','2019-04-20 18:10:38'),(459,'jovan','薪资更新:null','2019-04-20 18:10:47'),(460,'jovan','jovan登录','2019-04-20 18:29:59'),(461,'jovan','薪资批量更新成功！','2019-04-20 18:30:19'),(462,'jovan','考勤刷新: 2','2019-04-20 18:31:04'),(463,'jovan','jovan登录','2019-04-20 19:12:53'),(464,'SKY0010','SKY0010登录','2019-04-20 19:13:00'),(465,'SKY0010','考勤保存成功:SKY0010','2019-04-20 19:13:05'),(466,'jovan','jovan登录','2019-04-20 19:14:46'),(467,'jovan','薪资生成成功！','2019-04-20 19:15:53'),(468,'jovan','考勤刷新: 3','2019-04-20 19:33:56');
+/*!40000 ALTER TABLE `operate_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permissions`
+--
+
+DROP TABLE IF EXISTS `permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `permission` varchar(45) NOT NULL COMMENT '权限Action',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `impower` int(1) DEFAULT NULL,
+  `rtxnumber` varchar(20) DEFAULT NULL,
+  `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `permissions`
+--
+
+LOCK TABLES `permissions` WRITE;
+/*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
+INSERT INTO `permissions` VALUES (1,'account-list','用户列表',NULL,NULL,'2018-05-21 09:28:31'),(2,'account-role-list','角色操作',NULL,NULL,'2018-05-21 09:28:34'),(3,'account-perm-list','权限操作',NULL,NULL,'2018-05-21 09:28:36'),(4,'operatelog-list','日志列表',NULL,NULL,'2018-05-21 09:28:38'),(11,'dept-list','部门列表',NULL,NULL,'2019-04-04 02:37:13'),(12,'account','超级管理员权限',NULL,NULL,'2019-04-07 02:50:20'),(13,'hr','人事权限',NULL,NULL,'2019-04-07 02:50:54'),(14,'emp','普通员工权限',NULL,NULL,'2019-04-07 02:51:09'),(15,'log','日志权限',NULL,NULL,'2019-04-07 03:05:12'),(16,'emp-list','员工管理列表',NULL,NULL,'2019-04-07 03:07:36'),(17,'emp-attendance-list','员工考勤管理列表',NULL,NULL,'2019-04-07 03:07:56'),(18,'emp-overtime-list','员工加班管理列表',NULL,'','2019-04-07 03:08:17'),(19,'emp-leave-list','员工请假管理列表',NULL,NULL,'2019-04-07 03:09:05'),(20,'emp-salary-list','员工薪资管理列表',NULL,NULL,'2019-04-07 03:09:21'),(21,'attendance-list','考勤管理',NULL,NULL,'2019-04-07 03:10:22'),(22,'overtime-list','加班管理',NULL,'','2019-04-07 03:10:40'),(23,'leave-list','请假管理',NULL,NULL,'2019-04-07 03:10:55'),(24,'salary-list','薪资管理',NULL,NULL,'2019-04-07 03:11:11');
+/*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `roleName` varchar(45) NOT NULL COMMENT '角色名称',
+  `description` varchar(255) DEFAULT NULL COMMENT '角色描述',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'admin','管理员'),(4,'人事使用','人事管理使用角色'),(5,'员工使用','普通员工管理使用'),(6,'财务使用','财务管理工资单');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles_permissions`
+--
+
+DROP TABLE IF EXISTS `roles_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roles_permissions` (
+  `role_id` int(11) NOT NULL COMMENT '角色id',
+  `permission_id` int(11) NOT NULL COMMENT '权限id',
+  `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`role_id`,`permission_id`),
+  KEY `rolse_permissions_permissions_id_fk_idx` (`permission_id`) USING BTREE,
+  CONSTRAINT `roles_permissions_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`),
+  CONSTRAINT `roles_permissions_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles_permissions`
+--
+
+LOCK TABLES `roles_permissions` WRITE;
+/*!40000 ALTER TABLE `roles_permissions` DISABLE KEYS */;
+INSERT INTO `roles_permissions` VALUES (1,1,'2019-04-12 09:04:52'),(1,2,'2019-04-12 09:04:53'),(1,3,'2019-04-12 09:04:53'),(1,4,'2019-04-12 09:04:53'),(1,11,'2019-04-12 09:04:53'),(1,12,'2019-04-12 09:04:53'),(1,13,'2019-04-12 09:04:54'),(1,14,'2019-04-12 09:04:54'),(1,15,'2019-04-12 09:04:54'),(1,16,'2019-04-12 09:04:54'),(1,17,'2019-04-12 09:04:54'),(1,18,'2019-04-12 09:04:55'),(1,19,'2019-04-12 09:04:55'),(1,20,'2019-04-12 09:04:55'),(1,21,'2019-04-12 09:04:55'),(1,22,'2019-04-12 09:04:55'),(1,23,'2019-04-12 09:04:55'),(1,24,'2019-04-12 09:04:56'),(4,4,'2019-04-12 08:16:54'),(4,11,'2019-04-12 08:16:54'),(4,13,'2019-04-12 08:16:54'),(4,15,'2019-04-12 08:16:54'),(4,16,'2019-04-12 08:16:54'),(4,17,'2019-04-12 08:16:54'),(4,18,'2019-04-12 08:16:54'),(4,19,'2019-04-12 08:16:54'),(5,14,'2019-04-07 03:13:05'),(5,21,'2019-04-07 03:13:05'),(5,22,'2019-04-07 03:13:05'),(5,23,'2019-04-07 03:13:05'),(5,24,'2019-04-07 03:13:05'),(6,13,'2019-04-12 08:15:52'),(6,20,'2019-04-12 08:15:52');
+/*!40000 ALTER TABLE `roles_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_roles`
+--
+
+DROP TABLE IF EXISTS `user_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_roles` (
+  `user_id` int(11) NOT NULL COMMENT '用户Id',
+  `role_id` int(11) NOT NULL COMMENT '角色id',
+  `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`user_id`,`role_id`),
+  UNIQUE KEY `user_roles_roles_id_fk_idx` (`role_id`,`user_id`) USING BTREE,
+  CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_roles`
+--
+
+LOCK TABLES `user_roles` WRITE;
+/*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
+INSERT INTO `user_roles` VALUES (1,1,'2018-05-21 09:38:24'),(2,1,'2019-04-03 12:32:14'),(3,4,'2019-04-07 03:06:45'),(4,6,'2019-04-12 08:13:30'),(14,5,'2019-04-09 13:40:34'),(15,5,'2019-04-15 12:19:08');
+/*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL COMMENT '用户名',
+  `password` varchar(255) NOT NULL COMMENT '密码',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0未激活   1激活 ',
+  `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`,`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','p@ssw0rd#Sva!',1,'2018-05-21 09:38:04'),(2,'jovan','core@123',1,'2018-05-21 09:38:07'),(3,'yanzhu','123456',1,'2018-09-03 11:21:29'),(4,'qianru','123456',1,'2018-09-20 02:57:17'),(14,'SKY0010','SKY0010',1,'2019-04-09 13:40:34'),(15,'SKY0011','SKY0011',1,'2019-04-15 12:19:08');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `work_day`
+--
+
+DROP TABLE IF EXISTS `work_day`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `work_day` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `work_day` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `work_day`
+--
+
+LOCK TABLES `work_day` WRITE;
+/*!40000 ALTER TABLE `work_day` DISABLE KEYS */;
+INSERT INTO `work_day` VALUES (1,'2019-01-01'),(2,'2019-01-05'),(3,'2019-01-06'),(4,'2019-01-12'),(5,'2019-01-13'),(6,'2019-01-19'),(7,'2019-01-20'),(8,'2019-01-26'),(9,'2019-01-27'),(10,'2019-02-04'),(11,'2019-02-05'),(12,'2019-02-06'),(13,'2019-02-07'),(14,'2019-02-08'),(15,'2019-02-09'),(16,'2019-02-10'),(17,'2019-02-16'),(18,'2019-02-17'),(19,'2019-02-19'),(20,'2019-02-23'),(21,'2019-02-24'),(22,'2019-03-02'),(23,'2019-03-03'),(24,'2019-03-09'),(25,'2019-03-10'),(26,'2019-03-16'),(27,'2019-03-17'),(28,'2019-03-23'),(29,'2019-03-24'),(30,'2019-03-30'),(31,'2019-03-31'),(32,'2019-04-05'),(33,'2019-04-06'),(34,'2019-04-07'),(35,'2019-04-13'),(36,'2019-04-14'),(37,'2019-04-20'),(38,'2019-04-21'),(39,'2019-04-27'),(40,'2019-05-01'),(41,'2019-05-02'),(42,'2019-05-03'),(43,'2019-05-04'),(44,'2019-05-11'),(45,'2019-05-12'),(46,'2019-05-18'),(47,'2019-05-19'),(48,'2019-05-25'),(49,'2019-05-26'),(50,'2019-06-01'),(51,'2019-06-02'),(52,'2019-06-07'),(53,'2019-06-08'),(54,'2019-06-09'),(55,'2019-06-15'),(56,'2019-06-16'),(57,'2019-06-22'),(58,'2019-06-23'),(59,'2019-06-29'),(60,'2019-06-30');
+/*!40000 ALTER TABLE `work_day` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-04-20 22:22:44
