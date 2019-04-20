@@ -34,10 +34,17 @@
   
 # 配置数据库
 	```
-	安装MYSQL5
-		
-		https://dev.mysql.com/downloads/mysql/
+	安装MYSQL5（注意时区）
+		下载地址：
+			https://dev.mysql.com/downloads/mysql/
 	导入dump文件/SQL文件
+		src/main/resources/hr-pms.sql
+		src/main/resources/sql/*.sql
+		OR
+		src/main/resources/hr-pms.dump
+	批量增加员工及考勤记录
+		emp_batch_insert.xlsx
+		attendance_batch_insert.xlsx
 	```
   	
 # 拉取源代码

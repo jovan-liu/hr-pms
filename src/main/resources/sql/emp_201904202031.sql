@@ -1,0 +1,4 @@
+INSERT INTO chanx_manage.emp (dept_id,dept_name,name,age,ID_card,phone,email,birthday,sex,marital_status,place_of_birth,current_city,photo,`number`,hiredate,offdate,status,create_user_name,created_on,update_user_name,updated_on,salary) VALUES 
+(1,'人事部','sakura',20,'460033198810251144','15822223333','jovanliu.it@gmail.com','1994-01-29',0,1,'湖南省长沙市','广东省深圳市罗湖区','/upload/1554817240252.png','SKY0010','2019-04-02',NULL,1,'jovan','2019-04-09 21:40:40.000','jovan','2019-04-15 20:17:19.000',10000.00)
+,(3,'财务部','ayane',24,'460033199210251144','15822223333','ayane@sky.com','1992-10-25',1,0,'湖南省益阳市','广东省深圳市宝安区','/upload/1555330753937.png','SKY0011','2019-01-01',NULL,1,'jovan','2019-04-15 20:19:08.000','jovan','2019-04-15 20:19:08.000',10000.00)
+;
