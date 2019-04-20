@@ -57,5 +57,47 @@ public class EmpSalaryController extends BaseController {
 		data.put("status", "success");
 		return data;
 	}
+	
+	@RequestMapping(value = "/emp-salary-batchUpdate")
+	@ResponseBody
+	public Map<String, Object> batchUpdate(HttpServletRequest request)
+			throws InterruptedException {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean flag = salaryService.batchUpdate();
+		if (flag) {
+			OperateLog operateLog = new OperateLog();
+			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
+					: SecurityUtils.getSubject().getPrincipal().toString());
+			operateLog.setCreatetime(new Date());
+			operateLog.setOperateLog("薪资批量更新成功！" );
+			operateLogService.insert(operateLog);
+		}
+		map.put("result", flag);
+		data.put("data", map);
+		data.put("status", "success");
+		return data;
+	}
+	
+	@RequestMapping(value = "/emp-salary-generate")
+	@ResponseBody
+	public Map<String, Object> generate(HttpServletRequest request)
+			throws InterruptedException {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean flag = salaryService.generate(); 
+		if (flag) {
+			OperateLog operateLog = new OperateLog();
+			operateLog.setWorker(SecurityUtils.getSubject().getPrincipal() == null ? ""
+					: SecurityUtils.getSubject().getPrincipal().toString());
+			operateLog.setCreatetime(new Date());
+			operateLog.setOperateLog("薪资生成成功！");
+			operateLogService.insert(operateLog);
+		}
+		map.put("result", flag);
+		data.put("data", map);
+		data.put("status", "success");
+		return data;
+	}
 
 }

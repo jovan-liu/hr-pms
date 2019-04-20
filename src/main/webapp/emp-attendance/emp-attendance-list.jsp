@@ -122,6 +122,7 @@
 									</td>
 									<td>
 										<div class="btn-group">
+											<c:set var="nowDate" value="<%=new Date() %>"></c:set>
 											<c:if test="${attendance.status == null}">
 												<button
 													onclick="refresh('${attendance.id}')"

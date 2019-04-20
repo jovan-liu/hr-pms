@@ -66,7 +66,8 @@
 					onclick="resetForm(this);">重置</button>
 			</form>
 			<br>
-			
+			<button class="btn btn-info" style="width:150px;height:40px;margin-right: 300px;" id="generateBtn">生成上月账单</button>
+			<button class="btn btn-info" style="width:150px;height:40px;margin-right: 300px;" id="batchUpdateBtn">发放全部工资</button>
 			<br><br>
 			<div class="table-cont">
 				<div class="table-responsive">
@@ -213,12 +214,37 @@
 			$(this).prev("input[type='text']").val("");
 		});
 		
+		$("#generateBtn").click(function(){
+	 		$.post("${appName}/emp-salary/emp-salary-generate",
+	 				function(data){
+	 					if(data.data.result == false) {
+	 						alert("网络异常或服务器内部错误");
+	 					} else {
+	 						alert("生成成功！");
+	 						window.location.reload();
+	 					}
+	 				}, "json");
+	 	});
+		
+		$("#batchUpdateBtn").click(function(){
+	 		$.post("${appName}/emp-salary/emp-salary-batchUpdate",
+	 				function(data){
+	 					if(data.data.result == false) {
+	 						alert("网络异常或服务器内部错误");
+	 					} else {
+	 						alert("发放全部成功！");
+	 						window.location.reload();
+	 					}
+	 				}, "json");
+	 	});
+		
 		function edit(id, status){
 			$.post("${appName}/emp-salary/emp-salary-update",{"id":id, "status":status},
 			function(data){
 				if(data.data.result == false) {
 					alert("网络异常或服务器内部错误");
 				} else {
+					alert("发放成功！");
 					window.location.reload();
 				}
 			}, "json");

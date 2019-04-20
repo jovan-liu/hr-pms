@@ -4,18 +4,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lzh.hr.pms.dao.WorkDateDao">
 
-	<resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.Dept">
+	<!-- <resultMap id="BaseResultMap" type="com.lzh.hr.pms.entity.WorkDate">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="work_date" property="workDate" jdbcType="VARCHAR"/>
-    </resultMap>
-    
-    <sql id="Base_Column_List">
-    	id, work_date
-    </sql>
+        <result column="work_day" property="workDate" jdbcType="VARCHAR"/>
+    </resultMap> -->
     
     <select id="countWorkDate" resultType="Long">
 		SELECT count(*)
-		FROM work_date
+		FROM work_day
 		WHERE work_day BETWEEN #{beginDate} AND #{endDate}
 	</select>
 	

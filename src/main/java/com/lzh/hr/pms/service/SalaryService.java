@@ -12,9 +12,11 @@ public interface SalaryService {
 	
 	List<Salary> findAll();
 	
-	Boolean save(Salary salary);
+	Boolean generate();
 	
 	Boolean update(Salary salary);
+	
+	Boolean batchUpdate();
 	
 	Page<Salary> findByPage(SalaryRequest request, Integer pageNum, Integer pageSize);
 	

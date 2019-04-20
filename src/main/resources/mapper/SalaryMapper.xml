@@ -82,7 +82,7 @@
 				updated_on = #{updatedOn},
 			</if>
 		</set>
-		WHERE salary_date = #{salaryDate}
+		WHERE status = 0
 	</update>
 	
 	<select id="countSalary" resultType="Long">

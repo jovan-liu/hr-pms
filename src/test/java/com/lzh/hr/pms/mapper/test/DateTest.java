@@ -16,6 +16,10 @@ public class DateTest {
 		cale = Calendar.getInstance();
 		cale.add(Calendar.MONTH, -1);
 		cale.set(Calendar.DAY_OF_MONTH, 1);
+		cale.set(Calendar.HOUR_OF_DAY, 0);
+		cale.set(Calendar.MINUTE, 0);
+		cale.set(Calendar.SECOND, 0);
+		cale.set(Calendar.MILLISECOND, 0);
 		System.out.println(cale.getTime());
 		
 		cale.add(Calendar.MONTH, 1);

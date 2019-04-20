@@ -1,5 +1,7 @@
 package com.lzh.hr.pms.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface WorkDateDao {
 
 	/**
@@ -10,5 +12,5 @@ public interface WorkDateDao {
 	 * @param endDate 结束日期
 	 * @return
 	 */
-	Long countWorkDate(String beginDate, String endDate);
+	Long countWorkDate(@Param("beginDate") String beginDate, @Param("endDate") String endDate);
 }
