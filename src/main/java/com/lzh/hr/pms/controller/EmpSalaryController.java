@@ -99,5 +99,17 @@ public class EmpSalaryController extends BaseController {
 		data.put("status", "success");
 		return data;
 	}
+	
+	@RequestMapping(value = "/emp-salary-generate-month")
+	@ResponseBody
+	public Map<String, Object> generateByMonth(HttpServletRequest request, Integer month)
+			throws InterruptedException {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		salaryService.generateByMonth(month); 
+		data.put("data", map);
+		data.put("status", "success");
+		return data;
+	}
 
 }

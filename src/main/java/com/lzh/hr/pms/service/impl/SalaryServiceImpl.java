@@ -72,6 +72,7 @@ public class SalaryServiceImpl implements SalaryService {
 			cale.set(Calendar.MILLISECOND, 0);
 			Date firstDayOfMonth = cale.getTime();
 			
+			// 设置上月的最后一天
 			cale.add(Calendar.MONTH, 1);
 			cale.set(Calendar.DAY_OF_MONTH, 0);
 			Date lastDayOfMonth = cale.getTime();
@@ -176,9 +177,174 @@ public class SalaryServiceImpl implements SalaryService {
 					actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).add(new BigDecimal(200));
 					salary.setBonus(new BigDecimal(200));
 				} else {
+					// TODO 若考勤数与工作日不匹配，则扣除未考勤日的工资
+					Long exceptionDay = maxDays - workCount - attendanceCount;
+					actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).subtract(new BigDecimal(exceptionDay).multiply(dayMoney));
+					salary.setBonus(new BigDecimal(0));
 					// 考勤天数与工作日不一致，存在异常，扣除200元
-					actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).subtract(new BigDecimal(200));
-					salary.setBonus(new BigDecimal(-200));
+					//actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).subtract(new BigDecimal(200));
+					//salary.setBonus(new BigDecimal(-200));
+				}
+				
+				// 迟到早退3天则扣除100元
+				if (countLate > 3) {
+					actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).subtract(new BigDecimal(100));
+					salary.setBonus(new BigDecimal(-100));
+					salary.setLateMoney(new BigDecimal(-100));
+				} else {
+					salary.setLateMoney(new BigDecimal(0));
+				}
+				
+				salary.setEmpNumber(number);
+				salary.setSalaryDate(salaryDate);
+				salary.setWorkCount(Integer.valueOf(attendanceCount.toString()));
+				salary.setBasicMoney(basicMoney);
+				salary.setOtMoney(otMoney);
+				salary.setLeaveMoney(leaveMoney);
+				salary.setActualMoney(actualMoney);
+				salary.setStatus(0);
+				salary.setCreateUserName("SYSTEM");
+				salary.setCreatedOn(date);
+				salaryDao.save(salary);
+			}
+			return true;
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public Boolean generateByMonth(Integer month) {
+		try {
+			Salary salary = new Salary();
+			Date date = new Date();
+			
+			List<Emp> empList = empDao.findAll();
+			Calendar cale = null;
+			cale = Calendar.getInstance();
+			// 设置日期yyyy-MM-dd 上月的第一天
+			cale.set(Calendar.MONTH, month - 1);
+			cale.set(Calendar.DAY_OF_MONTH, 1);
+			// 设置时间HH:mm:ss.SSS 00:00:00.000
+			cale.set(Calendar.HOUR_OF_DAY, 0);
+			cale.set(Calendar.MINUTE, 0);
+			cale.set(Calendar.SECOND, 0);
+			cale.set(Calendar.MILLISECOND, 0);
+			Date firstDayOfMonth = cale.getTime();
+			
+			// 设置上月的最后一天
+			cale.set(Calendar.MONTH, month);
+			cale.set(Calendar.DAY_OF_MONTH, 0);
+			Date lastDayOfMonth = cale.getTime();
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM");
+			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			// 月份
+			String salaryDate = df.format(cale.getTime());
+			// 当月最大天数
+			int maxDays = cale.get(Calendar.DATE);
+			
+			for (Emp emp : empList) {
+				String number = emp.getNumber();
+				// 月薪基本工资
+				BigDecimal basicMoney = emp.getSalary();
+				// 日薪
+				BigDecimal dayMoney = basicMoney.divide(new BigDecimal(21.75), 2, BigDecimal.ROUND_DOWN);
+				// 时薪
+				BigDecimal hourMoney = dayMoney.divide(new BigDecimal(8), 2, BigDecimal.ROUND_DOWN);
+				
+				SalaryRequest salaryRequest = new SalaryRequest();
+				salaryRequest.setEmpNumber(number);
+				salaryRequest.setBeginDate(df.format(firstDayOfMonth));
+				salaryRequest.setEndDate(df.format(lastDayOfMonth));
+				Long countSalary = salaryDao.countSalary(salaryRequest);
+				if (countSalary > 0) {
+					// 已经发放
+					continue;
+				}
+				
+				
+				// 加班
+				OvertimeRequest otRequest = new OvertimeRequest();
+				otRequest.setEmpNumber(number);
+				otRequest.setBeginDate(firstDayOfMonth);
+				otRequest.setEndDate(lastDayOfMonth);
+				List<Overtime> overtimeList = overtimeDao.findByPage(otRequest, 0L, 100);
+				BigDecimal otMoney = new BigDecimal(0);
+				for (Overtime overtime : overtimeList) {
+					Date startTime = overtime.getStartTime();
+					Date endTime = overtime.getEndTime();
+					int startHour = startTime.getHours();
+					int startMinute = startTime.getMinutes();
+					
+					int endHour = endTime.getHours();
+					int endMinute = endTime.getMinutes();
+					
+					int otHour = endHour - startHour;
+					int otMinute = endMinute - startMinute;
+					if (otMinute > 30) {
+						otHour += 0.5;
+					}
+					// 加班薪资总和
+					otMoney.add(hourMoney.multiply(new BigDecimal(otHour)));
+				}
+				
+				// 请假
+				LeaveRequest leaveRequest = new LeaveRequest();
+				leaveRequest.setEmpNumber(number);
+				leaveRequest.setBeginDate(firstDayOfMonth);
+				leaveRequest.setEndDate(lastDayOfMonth);
+				List<Leave> leaveList = leaveDao.findByPage(leaveRequest, 0L, 100);
+				BigDecimal leaveMoney = new BigDecimal(0);
+				for (Leave leave : leaveList) {
+					Date startTime = leave.getStartTime();
+					Date endTime = leave.getEndTime();
+					int startHour = startTime.getHours();
+					int startMinute = startTime.getMinutes();
+					
+					int endHour = endTime.getHours();
+					int endMinute = endTime.getMinutes();
+					
+					int leaveHour = endHour - startHour;
+					int leaveMinute = endMinute - startMinute;
+					if (leaveMinute > 30) {
+						leaveHour += 0.5;
+					}
+					// 请假扣除薪资总和
+					leaveMoney.add(hourMoney.multiply(new BigDecimal(leaveHour)));
+				}
+				
+				// 考勤
+				AttendanceRequest attendanceRequest = new AttendanceRequest();
+				attendanceRequest.setEmpNumber(number);
+				attendanceRequest.setBeginDate(firstDayOfMonth);
+				attendanceRequest.setEndDate(lastDayOfMonth);
+				Long attendanceCount = attendanceDao.countAttendance(attendanceRequest);
+				
+				List<Attendance> attendanceList = attendanceDao.findByPage(attendanceRequest, 0L, 100);
+				int countLate = 0;
+				for (Attendance attendance : attendanceList) {
+					countLate += attendance.getCountLate();
+				}
+				
+				Long workCount = workDateDao.countWorkDate(sdf.format(firstDayOfMonth), sdf.format(lastDayOfMonth));
+				
+				// 实际发放			
+				BigDecimal actualMoney = new BigDecimal(0);
+				// 考勤天数与节假日天数相加等于当月天数
+				if (attendanceCount + workCount == maxDays) {
+					// 全勤则发放200元奖金
+					actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).add(new BigDecimal(200));
+					salary.setBonus(new BigDecimal(200));
+				} else {
+					// TODO 若考勤数与工作日不匹配，则扣除未考勤日的工资
+					Long exceptionDay = maxDays - workCount - attendanceCount;
+					actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).subtract(new BigDecimal(exceptionDay).multiply(dayMoney));
+					salary.setBonus(new BigDecimal(0));
+					// 考勤天数与工作日不一致，存在异常，扣除200元
+					//actualMoney = basicMoney.add(otMoney).subtract(leaveMoney).subtract(new BigDecimal(200));
+					//salary.setBonus(new BigDecimal(-200));
 				}
 				
 				// 迟到早退3天则扣除100元

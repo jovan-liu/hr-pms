@@ -14,6 +14,8 @@ public interface SalaryService {
 	
 	Boolean generate();
 	
+	Boolean generateByMonth(Integer month);
+	
 	Boolean update(Salary salary);
 	
 	Boolean batchUpdate();
