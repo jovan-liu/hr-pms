@@ -7,7 +7,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<packaging>war</packaging>
 	
 	<properties>
-		<spring.version>4.3.17.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
         <!-- <logback.version>1.1.7</logback.version>
 		<slf4j.version>1.7.21</slf4j.version> -->
 		<!-- 文件拷贝时的编码 -->
